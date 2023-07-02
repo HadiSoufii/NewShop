@@ -1,29 +1,14 @@
-﻿using Shop.Domain.Models.Common;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Shop.Domain.Models.Account
+namespace Shop.Application.ViewModels.AccountVM
 {
-    public class User : BaseEntity
+    public class RegisterUserViewModel
     {
-        #region propertis
-
         [Display(Name = "ایمیل")]
         [MaxLength(200, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر باشد")]
         [EmailAddress(ErrorMessage = "ایمیل وارد شده معتبر نمیباشد")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        [MaxLength(200, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر باشد")]
-        public string EmailActiveCode { get; set; } = string.Empty;
-
-        [Display(Name = "ایمیل فعال / غیر فعال")]
-        public bool IsEmailActive { get; set; }
-
-
-        [Display(Name = "تلفن همراه")]
-        [MaxLength(11, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر باشد")]
-        public string? Mobile { get; set; }
 
         [Display(Name = "نام و نام خانوادگی")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
@@ -35,17 +20,15 @@ namespace Shop.Domain.Models.Account
         [MaxLength(200, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر باشد")]
         public string Password { get; set; } = string.Empty;
 
-        [Display(Name = "آواتار")]
+        [Display(Name = "کلمه عبور")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(200, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر باشد")]
-        public string ImageName { get; set; } = string.Empty;
+        public string RePassword { get; set; } = string.Empty;
+    }
 
-        [Display(Name = "مدیر / کاربر عادی ")]
-        public bool IsAdmin { get; set; }
-
-        [Display(Name = " فعال / غیر فعال")]
-        public bool IsBan { get; set; }
-
-        #endregion
+    public enum RegisterUserResult
+    {
+        Success,
+        ExistUser,
     }
 }
