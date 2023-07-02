@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Shop.Data.Context;
+
 namespace Shop.MVC
 {
     public class Program
@@ -8,6 +11,15 @@ namespace Shop.MVC
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            #region config database
+
+            builder.Services.AddDbContext<ShopContext>(option =>
+            {
+                option.UseSqlServer(builder.Configuration.GetConnectionString("ShopContext"));
+            });
+
+            #endregion
 
             var app = builder.Build();
 
