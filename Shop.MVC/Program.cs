@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Shop.Data.Context;
+using Shop.Ioc;
 
 namespace Shop.MVC
 {
@@ -18,6 +19,12 @@ namespace Shop.MVC
             {
                 option.UseSqlServer(builder.Configuration.GetConnectionString("ShopContext"));
             });
+
+            #endregion
+
+            #region ioc
+
+            builder.Services.RegisterServices();
 
             #endregion
 

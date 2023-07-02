@@ -10,7 +10,7 @@
 
         #region default images
 
-        public static string DefaultAvatar = "/Template/Images/Defaults/";
+        public static string DefaultAvatar = "/Template/Images/Defaults/Default.jpg";
 
         #endregion
 

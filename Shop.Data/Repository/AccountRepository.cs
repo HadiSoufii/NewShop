@@ -16,25 +16,14 @@ namespace Shop.Data.Repository
             _context = context;
         }
 
+        #endregion
+
         public async Task<int> AddAsync(User user)
         {
             user.CreateDate = DateTime.Now;
             await _context.AddAsync(user);
             await _context.SaveChangesAsync();
             return user.Id;
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            var user = await GetUserByIdAsync(id);
-            if (user != null)
-               await DeleteAsync(user);
-        }
-
-        public async Task DeleteAsync(User user)
-        {
-            _context.Remove(user);
-            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<User>> GetAllUserAsync()
@@ -46,13 +35,6 @@ namespace Shop.Data.Repository
         {
             return await _context.Users.FindAsync(id);
         }
-
-        public async Task<bool> IsEixstUserByIdAsync(int id)
-        {
-            return await _context.Users.AnyAsync(u=> u.Id == id);
-        }
-
-        #endregion
 
         public async Task<bool> IsUserExistByEmailAsync(string email)
         {

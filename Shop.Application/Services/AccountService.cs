@@ -28,11 +28,6 @@ namespace Shop.Application.Services
             {
                 Email = register.Email,
                 FullName = register.FullName,
-                IsEmailActive= false,
-                IsAdmin = false,
-                IsBan = false,
-                IsDelete = false,
-                Mobile = null,
                 Password = register.Password,
                 ImageName = "Defult.jpg"
 

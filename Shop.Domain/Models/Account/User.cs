@@ -36,9 +36,8 @@ namespace Shop.Domain.Models.Account
         public string Password { get; set; } = string.Empty;
 
         [Display(Name = "آواتار")]
-        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(200, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر باشد")]
-        public string ImageName { get; set; } = string.Empty;
+        public string? ImageName { get; set; }
 
         [Display(Name = "مدیر / کاربر عادی ")]
         public bool IsAdmin { get; set; }
