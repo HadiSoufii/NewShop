@@ -6,6 +6,7 @@ using Shop.Application.ViewModels.Account;
 using Shop.Application.ViewModels.UserPanel;
 using Shop.Domain.Interfaces;
 using Shop.Domain.Models.Account;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Shop.Application.Services
 {
@@ -61,9 +62,52 @@ namespace Shop.Application.Services
             {
                 FullName = user?.FullName ?? "",
                 Mobile = user?.Mobile,
+                ImageName = user?.ImageName,
                 WalletBalance = 0,
                 Score = 0
             };
+        }
+
+        public async Task<EditUserPanelViewModel> GetUserByIdForEditUserPanelAsync(int id)
+        {
+            var user = await _accountRepository.GetUserByIdAsync(id);
+            return new EditUserPanelViewModel
+            {
+                FullName = user?.FullName ?? "",
+                Mobile = user?.Mobile,
+                ImageName = user?.ImageName,
+            };
+        }
+
+        public async Task<bool> EditUserInUserPanel(EditUserPanelViewModel editUser, int userId)
+        {
+            var user = await _accountRepository.GetUserByIdAsync(userId);
+
+            if (user != null)
+            {
+                user.FullName = editUser.FullName;
+                user.Mobile = editUser.Mobile;
+
+                if (editUser.Avatar != null && editUser.Avatar.IsImage())
+                {
+                    var imageName = Guid.NewGuid().ToString("N") + Path.GetExtension(editUser.Avatar.FileName);
+                    editUser.Avatar.AddImageToServer(
+                        imageName,
+                        PathExtension.UserAvatarOriginServer,
+                        100,
+                        100,
+                        PathExtension.UserAvatarThumbServer,
+                        imageName
+                        );
+                    user.ImageName = imageName;
+                }
+
+               await _accountRepository.UpdateAsync(user);
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

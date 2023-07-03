@@ -8,5 +8,7 @@ namespace Shop.Application.Interfaces
         Task<RegisterUserResult> AddUserAsync(RegisterUserViewModel register);
         Task<bool> ActiveAccountByEmailActiveCodeAsync(string emailActiveCode);
         Task<UserInformationViewModel> GetUserByIdForUserPanelAsync(int id);
+        Task<EditUserPanelViewModel> GetUserByIdForEditUserPanelAsync(int id);
+        Task<bool> EditUserInUserPanel(EditUserPanelViewModel editUser, int userId);
     }
 }

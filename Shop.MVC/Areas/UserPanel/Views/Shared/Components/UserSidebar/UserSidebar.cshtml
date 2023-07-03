@@ -6,7 +6,7 @@
             <div class="profile-detail">
                 <div class="d-flex align-items-center">
                     <div class="profile-avatar me-3">
-                        <img src="./Template/theme-assets/images/avatar/default.png" alt="avatar">
+                        <img src="@(Model.ImageName != null ? PathExtension.UserAvatarThumb+Model.ImageName:PathExtension.DefaultAvatar)" alt="avatar">
                     </div>
                     <div class="profile-info">
                         <a href="#" class="text-decoration-none text-dark fw-bold mb-2">
