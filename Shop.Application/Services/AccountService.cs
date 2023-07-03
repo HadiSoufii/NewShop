@@ -3,6 +3,7 @@ using Shop.Application.Interfaces;
 using Shop.Application.Senders;
 using Shop.Application.Utils;
 using Shop.Application.ViewModels.Account;
+using Shop.Application.ViewModels.UserPanel;
 using Shop.Domain.Interfaces;
 using Shop.Domain.Models.Account;
 
@@ -51,6 +52,18 @@ namespace Shop.Application.Services
             user.EmailActiveCode = Guid.NewGuid().ToString();
             await _accountRepository.UpdateAsync(user);
             return true;
+        }
+
+        public async Task<UserInformationViewModel> GetUserByIdForUserPanelAsync(int id)
+        {
+            var user = await _accountRepository.GetUserByIdAsync(id);
+            return new UserInformationViewModel
+            {
+                FullName = user?.FullName ?? "",
+                Mobile = user?.Mobile,
+                WalletBalance = 0,
+                Score = 0
+            };
         }
     }
 }
