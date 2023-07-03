@@ -4,7 +4,8 @@
     {
         #region domain address
 
-        public static string DomainAddress = "http://localhost:5196";
+        public static string DomainAddressHtttps = "https://localhost:7150";
+        public static string DomainAddressHtttp = "https://localhost:5033";
 
         #endregion
 

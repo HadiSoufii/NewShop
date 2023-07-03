@@ -1,6 +1,8 @@
-﻿using Shop.Application.Interfaces;
+﻿using Shop.Application.Extensions;
+using Shop.Application.Interfaces;
+using Shop.Application.Senders;
 using Shop.Application.Utils;
-using Shop.Application.ViewModels.AccountVM;
+using Shop.Application.ViewModels.Account;
 using Shop.Domain.Interfaces;
 using Shop.Domain.Models.Account;
 
@@ -11,10 +13,12 @@ namespace Shop.Application.Services
         #region constructor
 
         private readonly IAccountRepository _accountRepository;
+        private readonly ISendEmailSerivce _sendEmailSerivce;
 
-        public AccountService(IAccountRepository accountRepository)
+        public AccountService(IAccountRepository accountRepository, ISendEmailSerivce sendEmailSerivce)
         {
             _accountRepository = accountRepository;
+            _sendEmailSerivce = sendEmailSerivce;
         }
 
         #endregion
@@ -26,13 +30,15 @@ namespace Shop.Application.Services
 
             User user = new User
             {
-                Email = register.Email,
+                Email = register.Email.FixedEmail(),
                 FullName = register.FullName,
-                Password = register.Password,
-                ImageName = "Defult.jpg"
+                Password = register.Password.EncodePasswordMd5(),
+                EmailActiveCode = Guid.NewGuid().ToString(),
 
             };
             await _accountRepository.AddAsync(user);
+
+           _sendEmailSerivce.SendActiveCodeByEmail(user.Email,user.FullName,user.EmailActiveCode, "_ActiveEmail", "فعالسازی حساب کاربری");
 
             return RegisterUserResult.Success;
         }

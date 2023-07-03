@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Shop.Application.ViewModels.AccountVM
+namespace Shop.Application.ViewModels.Account
 {
     public class RegisterUserViewModel
     {
         [Display(Name = "ایمیل")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(200, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر باشد")]
         [EmailAddress(ErrorMessage = "ایمیل وارد شده معتبر نمیباشد")]
         [DataType(DataType.EmailAddress)]
@@ -20,9 +21,10 @@ namespace Shop.Application.ViewModels.AccountVM
         [MaxLength(200, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر باشد")]
         public string Password { get; set; } = string.Empty;
 
-        [Display(Name = "کلمه عبور")]
+        [Display(Name = "تکرار کلمه عبور")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(200, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر باشد")]
+        [Compare("Password", ErrorMessage = "تکرار کلمه عبور با کلمه عبور مغایرت دارد")]
         public string RePassword { get; set; } = string.Empty;
     }
 

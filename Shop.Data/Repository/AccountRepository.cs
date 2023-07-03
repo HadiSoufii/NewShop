@@ -22,7 +22,7 @@ namespace Shop.Data.Repository
         {
             user.CreateDate = DateTime.Now;
             await _context.AddAsync(user);
-            await _context.SaveChangesAsync();
+            await SaveChangesAsync();
             return user.Id;
         }
 
@@ -44,6 +44,11 @@ namespace Shop.Data.Repository
         public async Task UpdateAsync(User user)
         {
             _context.Update(user);
+            await SaveChangesAsync();
+        }
+
+        public async Task SaveChangesAsync()
+        {
             await _context.SaveChangesAsync();
         }
     }

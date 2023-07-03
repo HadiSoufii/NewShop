@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Shop.Application.Interfaces;
+using Shop.Application.Senders;
 using Shop.Application.Services;
 using Shop.Data.Repository;
 using Shop.Domain.Interfaces;
+using TopLearn.Application.Convertors;
 
 namespace Shop.Ioc
 {
@@ -10,11 +12,24 @@ namespace Shop.Ioc
     {
         public static void RegisterServices(this IServiceCollection services)
         {
-            // repository
+            #region repository
+
             services.AddScoped<IAccountRepository, AccountRepository>();
 
-            // service
+            #endregion
+
+            #region service
+
             services.AddScoped<IAccountService, AccountService>();
+
+            #endregion
+
+            #region email
+
+            services.AddTransient<IViewRenderService, RenderViewToString>();
+            services.AddTransient<ISendEmailSerivce, SendEmailSerivce>();
+
+            #endregion
 
         }
     }

@@ -1,5 +1,4 @@
-﻿using Shop.Application.ViewModels.AccountVM;
-using Shop.Domain.Models.Account;
+﻿using Shop.Application.ViewModels.Account;
 
 namespace Shop.Application.Interfaces
 {

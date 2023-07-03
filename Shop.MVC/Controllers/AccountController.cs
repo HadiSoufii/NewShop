@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Interfaces;
-using Shop.Application.ViewModels.AccountVM;
+using Shop.Application.ViewModels.Account;
 
 namespace Shop.MVC.Controllers
 {
@@ -19,15 +19,35 @@ namespace Shop.MVC.Controllers
 
         #region register
 
-        public async Task<IActionResult> Register()
+        [HttpGet("register")]
+        public IActionResult Register()
         {
+            if (User.Identity!=null && User.Identity.IsAuthenticated)
+                return NotFound();
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("register"),ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterUserViewModel register)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                var result = await _accountService.AddUserAsync(register);
+
+                switch (result)
+                {
+                    case RegisterUserResult.Success:
+                        TempData["IsSuccessRegister"] = true;
+                        return View(register);
+                    case RegisterUserResult.ExistUser:
+                        ModelState.AddModelError("Email", "ایمیل وارد شده قبلا ثبت نام کرده است");
+                        return View(register);
+                    default:
+                        break;
+                }
+            }
+
+            return View(register);
         }
 
         #endregion
