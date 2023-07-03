@@ -42,5 +42,15 @@ namespace Shop.Application.Services
 
             return RegisterUserResult.Success;
         }
+
+        public async Task<LoginViewModel.LoginResult> LoginAsync(LoginViewModel login)
+        {
+            if (await _accountRepository.IsUserExistByEmailAndPasswordAsync(login.Email,login.Password))
+            {
+                return LoginViewModel.LoginResult.ExistUser; 
+            }
+
+            return LoginViewModel.LoginResult.Success;
+        }
     }
 }

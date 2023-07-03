@@ -22,12 +22,12 @@ namespace Shop.MVC.Controllers
         [HttpGet("register")]
         public IActionResult Register()
         {
-            if (User.Identity!=null && User.Identity.IsAuthenticated)
+            if (User.Identity != null && User.Identity.IsAuthenticated)
                 return NotFound();
             return View();
         }
 
-        [HttpPost("register"),ValidateAntiForgeryToken]
+        [HttpPost("register"), ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterUserViewModel register)
         {
             if (ModelState.IsValid)
@@ -48,6 +48,37 @@ namespace Shop.MVC.Controllers
             }
 
             return View(register);
+        }
+
+
+        #endregion
+
+        #region Login
+
+        [HttpGet("login")]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginViewModel login)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _accountService.LoginAsync(login);
+                switch (result)
+                {
+                    case LoginViewModel.LoginResult.Success:
+                        return View(login);
+                    case LoginViewModel.LoginResult.ExistUser:
+                        return View(login);
+                    default:
+                        break;
+
+                }
+            }
+            return View(login);
         }
 
         #endregion

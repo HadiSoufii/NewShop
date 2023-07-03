@@ -5,5 +5,7 @@ namespace Shop.Application.Interfaces
     public interface IAccountService
     {
         Task<RegisterUserResult> AddUserAsync(RegisterUserViewModel register);
+
+        Task<LoginViewModel.LoginResult> LoginAsync (LoginViewModel login);
     }
 }

@@ -10,5 +10,6 @@ namespace Shop.Domain.Interfaces
         Task<int> AddAsync(User user);
         Task UpdateAsync(User user);
         Task SaveChangesAsync();
+        Task<bool> IsUserExistByEmailAndPasswordAsync(string email, string password);
     }
 }

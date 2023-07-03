@@ -51,5 +51,10 @@ namespace Shop.Data.Repository
         {
             await _context.SaveChangesAsync();
         }
+
+        public async Task<bool> IsUserExistByEmailAndPasswordAsync(string email, string password)
+        {
+            return await _context.Users.AnyAsync(c=>c.Email== email && c.Password == password);
+        }
     }
 }
