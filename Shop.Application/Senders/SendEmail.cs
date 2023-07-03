@@ -25,7 +25,7 @@ namespace TopLearn.Application.Senders
 
             SmtpServer.Port = 587;
             //SmtpServer.Credentials = new System.Net.NetworkCredential("mytoplearn22@gmail.com", "ToP1234&LearN4321@$TopLearN", "smtp.gmail.com");
-            SmtpServer.Credentials = new System.Net.NetworkCredential("mytoplearn22@gmail.com", "ufymtiopxeadjdga");
+            SmtpServer.Credentials = new System.Net.NetworkCredential("mytoplearn22@gmail.com", "buqnjcptovvofgmp");
             SmtpServer.EnableSsl = true;
             SmtpServer.UseDefaultCredentials = false;
 
