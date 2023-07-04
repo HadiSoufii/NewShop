@@ -1,4 +1,5 @@
 ﻿using Shop.Application.ViewModels.Account;
+using Shop.Application.ViewModels.UserPanel;
 
 namespace Shop.Application.Interfaces
 {
@@ -8,5 +9,8 @@ namespace Shop.Application.Interfaces
 
         Task<LoginViewModel.LoginResult> LoginAsync (LoginViewModel login);
         Task<bool> ActiveAccountByEmailActiveCodeAsync(string emailActiveCode);
+        Task<UserInformationViewModel> GetUserByIdForUserPanelAsync(int id);
+        Task<EditUserPanelViewModel> GetUserByIdForEditUserPanelAsync(int id);
+        Task<bool> EditUserInUserPanel(EditUserPanelViewModel editUser, int userId);
     }
 }
