@@ -64,7 +64,7 @@ namespace Shop.MVC.Areas.Admin.Controllers
         [HttpGet("update-user/{id}")]
         public async Task<IActionResult> UpdateUser(int id)
         {
-            UpdateUserByAdminViewModel updateUser = await _accountService.GetUserForEditByAdminAsync(id);
+            UpdateUserByAdminViewModel? updateUser = await _accountService.GetUserForEditByAdminAsync(id);
             if (updateUser == null) return NotFound();
             return View(updateUser);
         }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Interfaces;
-using Shop.Application.ViewModels.Account;
+using Shop.Domain.ViewModels.Account;
 
 namespace Shop.MVC.Controllers
 {

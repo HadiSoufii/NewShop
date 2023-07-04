@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Interfaces;
-using Shop.Application.ViewModels.UserPanel;
+using Shop.Domain.ViewModels.UserPanel;
 using Shop.MVC.PresentationExtensions;
 
 namespace Shop.MVC.Areas.UserPanel.ViewComponents
