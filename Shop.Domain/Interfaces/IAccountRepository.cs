@@ -9,6 +9,7 @@ namespace Shop.Domain.Interfaces
         Task<bool> IsUserExistByEmailAsync(string email);
         Task<int> AddAsync(User user);
         Task UpdateAsync(User user);
+        Task<User?> GetUserByEmailActiveCodeAsync(string emailActiveCode);
         Task SaveChangesAsync();
         Task<bool> IsUserExistByEmailAndPasswordAsync(string email, string password);
     }

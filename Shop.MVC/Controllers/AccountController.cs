@@ -37,13 +37,10 @@ namespace Shop.MVC.Controllers
                 switch (result)
                 {
                     case RegisterUserResult.Success:
-                        TempData["IsSuccessRegister"] = true;
-                        return View(register);
+                        return View("SuccessRegister",new SuccessRegisterViewModel { FullName = register.FullName, Email = register.Email });
                     case RegisterUserResult.ExistUser:
                         ModelState.AddModelError("Email", "ایمیل وارد شده قبلا ثبت نام کرده است");
                         return View(register);
-                    default:
-                        break;
                 }
             }
 
@@ -79,6 +76,18 @@ namespace Shop.MVC.Controllers
                 }
             }
             return View(login);
+        }
+
+        #endregion
+
+        #region active account
+
+        [HttpGet("active-account/{activeCode}")]
+        public async Task<IActionResult> ActiveAccount(string activeCode)
+        {
+            bool ResultActiveAccount = await _accountService.ActiveAccountByEmailActiveCodeAsync(activeCode);
+            TempData["resultActiveAccount"] = ResultActiveAccount;
+            return View();
         }
 
         #endregion

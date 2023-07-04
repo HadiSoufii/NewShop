@@ -1,6 +1,5 @@
-﻿@model RegisterUserViewModel
+﻿@model SuccessRegisterViewModel
 @{
-    ViewData["Title"] = "Register";
     Layout = null;
 }
 
@@ -18,19 +17,6 @@
     <link rel="stylesheet" href="./Template/theme-assets/css/dependencies.css">
     <link rel="stylesheet" href="./Template/theme-assets/css/theme.css">
     <link rel="stylesheet" href="./Template/theme-assets/css/custom.css">
-    <style>
-        #Email:-moz-placeholder {
-            text-align: right;
-        }
-
-        #Email:-ms-input-placeholder {
-            text-align: right;
-        }
-
-        #Email::-webkit-input-placeholder {
-            text-align: right;
-        }
-    </style>
 </head>
 
 <body>
@@ -46,54 +32,14 @@
         <main class="page-content page-auth">
             <!-- start of auth-container -->
             <div class="auth-container">
-                <div class="auth-title mb-3">ثبت نام</div>
+                <div class="auth-title mb-3">نتیجه ثبت نام</div>
                 <!-- start of auth-box -->
                 <div class="auth-box ui-box">
-                    <!-- start of auth-form -->
-                    <form asp-controller="Account" asp-action="Register" method="post" class="auth-form">
-                        <!-- start of form-element -->
-                        <div class="form-element-row mb-5">
-                            <input asp-for="Email" class="form-control" placeholder="ایمیل">
-                            <span asp-validation-for="Email" style="color:red;"></span>
-                        </div>
-                        <!-- end of form-element -->
-                        <!-- start of form-element -->
-                        <div class="form-element-row mb-5">
-                            <input asp-for="FullName" class="form-control" placeholder="نام و نام خانوادگی">
-                            <span asp-validation-for="FullName" style="color:red;"></span>
-                        </div>
-                        <!-- end of form-element -->
-                        <!-- start of form-element -->
-                        <div class="form-element-row mb-5">
-                            <input asp-for="Password" type="password" class="form-control" placeholder="کلمه عبور">
-                            <span asp-validation-for="Password" style="color:red;"></span>
-                        </div>
-                        <!-- end of form-element -->
-                        <!-- start of form-element -->
-                        <div class="form-element-row mb-5">
-                            <input asp-for="RePassword" type="password" class="form-control" placeholder="تکرار کلمه عبور">
-                            <span asp-validation-for="RePassword" style="color:red;"></span>
-                        </div>
-                        <!-- end of form-element -->
-                        <!-- start of form-element -->
-                        <div class="form-element-row mb-3">
-                            <button class="btn btn-primary">ادامه</button>
-                        </div>
-                        <!-- end of form-element -->
-                        <!-- start of form-element -->
-                        <div class="form-element-row">
-                            <div>
-                                با ورود و یا ثبت نام در سایت شما <a href="#" class="link">
-                                    شرایط و
-                                    قوانین
-                                </a> استفاده
-                                از تمام سرویس های
-                                سایت و <a href="#" class="link">قوانین حریم خصوصی</a> آن را می‌پذیرید.
-                            </div>
-                        </div>
-                        <!-- end of form-element -->
-                    </form>
-                    <!-- end of auth-form -->
+                    <div class="alert alert-success p-5 m-3">
+                        @Model.FullName عزیز
+                        <br />
+                        ایمیل فعالسازی حساب به ایمیل شما (@Model.Email) ارسال شد برای فعال کردن حساب به ایمیل خود وارد شده
+                    </div>
                 </div>
                 <!-- end of auth-box -->
             </div>
@@ -143,4 +89,3 @@
 </body>
 
 </html>sss
-

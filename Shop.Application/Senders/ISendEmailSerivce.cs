@@ -14,13 +14,10 @@ namespace Shop.Application.Senders
     public class SendEmailSerivce : ISendEmailSerivce
     {
         private IViewRenderService _viewRender;
-        private IDataProtector _protector;
 
         public SendEmailSerivce(IViewRenderService viewRender, IDataProtectionProvider provider)
         {
             _viewRender = viewRender;
-            _protector = provider.CreateProtector("TopLearn.encodeUserInformatio",
-           new string[] { "encodeUser" });
         }
 
         public void SendActiveCodeByEmail(string email, string fullName, string activeCode, string viewName, string title)

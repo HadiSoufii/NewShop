@@ -47,6 +47,11 @@ namespace Shop.Data.Repository
             await SaveChangesAsync();
         }
 
+        public async Task<User?> GetUserByEmailActiveCodeAsync(string emailActiveCode)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u=> u.EmailActiveCode == emailActiveCode );
+        }
+
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();

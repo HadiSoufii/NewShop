@@ -7,5 +7,6 @@ namespace Shop.Application.Interfaces
         Task<RegisterUserResult> AddUserAsync(RegisterUserViewModel register);
 
         Task<LoginViewModel.LoginResult> LoginAsync (LoginViewModel login);
+        Task<bool> ActiveAccountByEmailActiveCodeAsync(string emailActiveCode);
     }
 }

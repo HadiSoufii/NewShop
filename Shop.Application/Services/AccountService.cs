@@ -52,5 +52,15 @@ namespace Shop.Application.Services
 
             return LoginViewModel.LoginResult.Success;
         }
+
+        public async Task<bool> ActiveAccountByEmailActiveCodeAsync(string emailActiveCode)
+        {
+            var user = await _accountRepository.GetUserByEmailActiveCodeAsync(emailActiveCode);
+            if (user == null || user.IsEmailActive || user.EmailActiveCode != emailActiveCode) return false;
+            user.IsEmailActive = true;
+            user.EmailActiveCode = Guid.NewGuid().ToString();
+            await _accountRepository.UpdateAsync(user);
+            return true;
+        }
     }
 }
