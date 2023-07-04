@@ -61,6 +61,10 @@ namespace Shop.MVC.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginViewModel login)
         {
+            //if (!ModelState.ValidationState)
+            //{
+            //    return View(login);
+            //}
             if (ModelState.IsValid)
             {
                 var result = await _accountService.LoginAsync(login);
