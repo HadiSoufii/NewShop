@@ -1,4 +1,5 @@
 ﻿using Shop.Domain.Models.Account;
+using Shop.Domain.ViewModels.Account;
 
 namespace Shop.Domain.Interfaces
 {
@@ -12,5 +13,6 @@ namespace Shop.Domain.Interfaces
         Task<User?> GetUserByEmailActiveCodeAsync(string emailActiveCode);
         Task SaveChangesAsync();
         Task<bool> IsUserExistByEmailAndPasswordAsync(string email, string password);
+        Task<FilterUsersInAdminViewModel> FilterUsers(FilterUsersInAdminViewModel filter);
     }
 }

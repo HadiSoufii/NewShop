@@ -1,4 +1,4 @@
-﻿namespace Shop.Application.Domain.Send
+﻿namespace Shop.Domain.ViewModels.Send
 {
     public class SendEmailViewModel
     {

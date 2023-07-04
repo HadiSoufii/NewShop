@@ -2,11 +2,10 @@
 using Shop.Application.Interfaces;
 using Shop.Application.Senders;
 using Shop.Application.Utils;
-using Shop.Application.ViewModels.Account;
-using Shop.Application.ViewModels.UserPanel;
 using Shop.Domain.Interfaces;
 using Shop.Domain.Models.Account;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using Shop.Domain.ViewModels.Account;
+using Shop.Domain.ViewModels.UserPanel;
 
 namespace Shop.Application.Services
 {
@@ -40,16 +39,16 @@ namespace Shop.Application.Services
             };
             await _accountRepository.AddAsync(user);
 
-           _sendEmailSerivce.SendActiveCodeByEmail(user.Email,user.FullName,user.EmailActiveCode, "_ActiveEmail", "فعالسازی حساب کاربری");
+            _sendEmailSerivce.SendActiveCodeByEmail(user.Email, user.FullName, user.EmailActiveCode, "_ActiveEmail", "فعالسازی حساب کاربری");
 
             return RegisterUserResult.Success;
         }
 
         public async Task<LoginViewModel.LoginResult> LoginAsync(LoginViewModel login)
         {
-            if (await _accountRepository.IsUserExistByEmailAndPasswordAsync(login.Email,login.Password))
+            if (await _accountRepository.IsUserExistByEmailAndPasswordAsync(login.Email, login.Password))
             {
-                return LoginViewModel.LoginResult.ExistUser; 
+                return LoginViewModel.LoginResult.ExistUser;
             }
 
             return LoginViewModel.LoginResult.Success;
@@ -89,7 +88,7 @@ namespace Shop.Application.Services
             };
         }
 
-        public async Task<bool> EditUserInUserPanel(EditUserPanelViewModel editUser, int userId)
+        public async Task<bool> EditUserInUserPanelAsync(EditUserPanelViewModel editUser, int userId)
         {
             var user = await _accountRepository.GetUserByIdAsync(userId);
 
@@ -107,17 +106,113 @@ namespace Shop.Application.Services
                         100,
                         100,
                         PathExtension.UserAvatarThumbServer,
-                        imageName
+                        editUser.ImageName
                         );
                     user.ImageName = imageName;
                 }
 
-               await _accountRepository.UpdateAsync(user);
+                await _accountRepository.UpdateAsync(user);
 
                 return true;
             }
 
             return false;
+        }
+
+        public async Task<FilterUsersInAdminViewModel> GetUsersForAdminAsync(FilterUsersInAdminViewModel filter)
+        {
+            return await _accountRepository.FilterUsers(filter);
+        }
+
+        public async Task<CreateUserByAdminResult> AddUserByAdminAsync(CreateUserByAdminViewModel createUser)
+        {
+            if (await _accountRepository.IsUserExistByEmailAsync(createUser.Email))
+                return CreateUserByAdminResult.ExistUser;            
+
+            User user = new User
+            {
+                Email = createUser.Email.FixedEmail(),
+                FullName = createUser.FullName,
+                Password = createUser.Password.EncodePasswordMd5(),
+                EmailActiveCode = Guid.NewGuid().ToString(),
+                IsEmailActive = true,
+                Mobile = createUser.Mobile,
+                IsAdmin = createUser.IsAdmin
+            };
+            await _accountRepository.AddAsync(user);
+
+            #region insert image
+
+            if (createUser.Avatar != null && createUser.Avatar.IsImage())
+            {
+                var imageName = Guid.NewGuid().ToString("N") + Path.GetExtension(createUser.Avatar.FileName);
+                createUser.Avatar.AddImageToServer(
+                    imageName,
+                    PathExtension.UserAvatarOriginServer,
+                    100,
+                    100,
+                    PathExtension.UserAvatarThumbServer,
+                    null
+                    );
+                user.ImageName = imageName;
+            }
+
+            #endregion
+
+            return CreateUserByAdminResult.Success;
+        }
+
+        public async Task<UpdateUserByAdminViewModel?> GetUserForEditByAdminAsync(int id)
+        {
+            User? user = await _accountRepository.GetUserByIdAsync(id);
+            if (user == null) return null;
+            return new UpdateUserByAdminViewModel
+            {
+                Email = user.Email,
+                ImageName = user.ImageName,
+                FullName = user.FullName,
+                Id = user.Id,
+                IsAdmin = user.IsAdmin,
+                IsBan = user.IsBan,
+                IsEmailActive = user.IsEmailActive,
+                Mobile = user.Mobile,
+            };
+        }
+        
+        public async Task<bool> UpdateUserByAdminAsync(UpdateUserByAdminViewModel updateUser)
+        {
+            User? user = await _accountRepository.GetUserByIdAsync(updateUser.Id);
+            if (user == null) return false;
+
+            user.IsAdmin = updateUser.IsAdmin;
+            user.IsBan = updateUser.IsBan;
+            user.FullName = updateUser.FullName;
+            user.Mobile = updateUser.Mobile;
+            user.IsEmailActive = updateUser.IsEmailActive;
+
+            if(!string.IsNullOrEmpty(updateUser.Password))
+                user.Password = updateUser.Password.EncodePasswordMd5();
+
+            #region insert image
+
+
+            if (updateUser.Avatar != null && updateUser.Avatar.IsImage())
+            {
+                var imageName = Guid.NewGuid().ToString("N") + Path.GetExtension(updateUser.Avatar.FileName);
+                updateUser.Avatar.AddImageToServer(
+                    imageName,
+                    PathExtension.UserAvatarOriginServer,
+                    100,
+                    100,
+                    PathExtension.UserAvatarThumbServer,
+                    updateUser.ImageName
+                    );
+                user.ImageName = imageName;
+            }
+
+            #endregion
+
+            return true;
         }
     }
 }

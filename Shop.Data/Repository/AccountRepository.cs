@@ -2,6 +2,8 @@
 using Shop.Data.Context;
 using Shop.Domain.Interfaces;
 using Shop.Domain.Models.Account;
+using Shop.Domain.ViewModels.Account;
+using Shop.Domain.ViewModels.Paging;
 
 namespace Shop.Data.Repository
 {
@@ -60,6 +62,31 @@ namespace Shop.Data.Repository
         public async Task<bool> IsUserExistByEmailAndPasswordAsync(string email, string password)
         {
             return await _context.Users.AnyAsync(c=>c.Email== email && c.Password == password);
+        }
+
+        public async Task<FilterUsersInAdminViewModel> FilterUsers(FilterUsersInAdminViewModel filter)
+        {
+            var query = _context.Users.AsQueryable();
+
+            #region filter
+
+            if (!string.IsNullOrEmpty(filter.Email))
+                query = query = query.Where(s => EF.Functions.Like(s.Email, $"%{filter.Email}%"));
+
+            if (!string.IsNullOrEmpty(filter.Mobile))
+                query = query = query.Where(s => EF.Functions.Like(s.Email, $"%{filter.Email}%"));
+
+            #endregion
+
+            #region paging
+
+            var usersCount = await query.CountAsync();
+            var pager = Pager.Build(filter.PageId, usersCount, filter.TakeEntity, filter.HowManyShowPageAfterAndBefore);
+            var allEntities = await query.Paging(pager).ToListAsync();
+
+            #endregion
+
+            return filter.SetPaging(pager).SetUsers(allEntities); ;
         }
     }
 }
