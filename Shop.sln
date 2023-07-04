@@ -17,11 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.Data", "Shop.Data\Shop
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shop.Domain", "Shop.Domain", "{190AF6C8-E1A7-4313-AD16-519B07DE56FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.Domain", "Shop.Domain\Shop.Domain.csproj", "{537CDC7D-6B80-46BE-B0EA-1B9EBFFD0CB4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.Domain", "Shop.Domain\Shop.Domain.csproj", "{537CDC7D-6B80-46BE-B0EA-1B9EBFFD0CB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.Ioc", "Shop.Ioc\Shop.Ioc.csproj", "{AABD64B0-AC48-4324-B636-D8770FE2B6FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.Ioc", "Shop.Ioc\Shop.Ioc.csproj", "{AABD64B0-AC48-4324-B636-D8770FE2B6FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.Application", "Shop.Application\Shop.Application.csproj", "{451D497A-80F9-43C1-BCFA-01DC4E9F76B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.Application", "Shop.Application\Shop.Application.csproj", "{451D497A-80F9-43C1-BCFA-01DC4E9F76B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

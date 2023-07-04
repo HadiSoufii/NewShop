@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Shop.Application.Convertors;
 using Shop.Application.Interfaces;
 using Shop.Application.Senders;
 using Shop.Application.Services;
 using Shop.Data.Repository;
 using Shop.Domain.Interfaces;
-using TopLearn.Application.Convertors;
 
 namespace Shop.Ioc
 {

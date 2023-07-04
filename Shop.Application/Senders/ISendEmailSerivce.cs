@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
+using Shop.Application.Convertors;
 using Shop.Application.Utils;
 using Shop.Application.ViewModels.Send;
-using TopLearn.Application.Convertors;
 using TopLearn.Application.Senders;
 
 namespace Shop.Application.Senders
@@ -15,7 +15,7 @@ namespace Shop.Application.Senders
     {
         private IViewRenderService _viewRender;
 
-        public SendEmailSerivce(IViewRenderService viewRender, IDataProtectionProvider provider)
+        public SendEmailSerivce(IViewRenderService viewRender)
         {
             _viewRender = viewRender;
         }

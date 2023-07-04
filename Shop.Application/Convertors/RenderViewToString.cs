@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 
-namespace TopLearn.Application.Convertors
+namespace Shop.Application.Convertors
 {
     public interface IViewRenderService
     {
