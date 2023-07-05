@@ -69,7 +69,7 @@ namespace Shop.MVC.Areas.Admin.Controllers
             return View(updateUser);
         }
 
-        [HttpPost("update-user"), ValidateAntiForgeryToken]
+        [HttpPost("update-user/{id}"), ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateUser(UpdateUserByAdminViewModel updateUser)
         {
             if (ModelState.IsValid)

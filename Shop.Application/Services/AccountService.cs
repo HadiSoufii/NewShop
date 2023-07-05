@@ -139,7 +139,6 @@ namespace Shop.Application.Services
                 Mobile = createUser.Mobile,
                 IsAdmin = createUser.IsAdmin
             };
-            await _accountRepository.AddAsync(user);
 
             #region insert image
 
@@ -159,6 +158,8 @@ namespace Shop.Application.Services
 
             #endregion
 
+            await _accountRepository.AddAsync(user);
+
             return CreateUserByAdminResult.Success;
         }
 
@@ -168,7 +169,6 @@ namespace Shop.Application.Services
             if (user == null) return null;
             return new UpdateUserByAdminViewModel
             {
-                Email = user.Email,
                 ImageName = user.ImageName,
                 FullName = user.FullName,
                 Id = user.Id,
@@ -211,6 +211,8 @@ namespace Shop.Application.Services
             }
 
             #endregion
+
+            await _accountRepository.UpdateAsync(user);
 
             return true;
         }
