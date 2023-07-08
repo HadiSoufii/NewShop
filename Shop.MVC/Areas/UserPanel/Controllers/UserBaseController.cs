@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Shop.MVC.Areas.UserPanel.Controllers
 {
@@ -8,6 +7,9 @@ namespace Shop.MVC.Areas.UserPanel.Controllers
     [Route("user-panel")]
     public class UserBaseController : Controller
     {
-
+        protected string ErrorMessage = "ErrorMessage";
+        protected string SuccessMessage = "SuccessMessage";
+        protected string InfoMessage = "InfoMessage";
+        protected string WarningMessage = "WarningMessage";
     }
 }

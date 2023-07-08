@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Shop.Data.Context;
 using Shop.Ioc;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
 namespace Shop.MVC
 {
@@ -25,6 +27,14 @@ namespace Shop.MVC
             #region ioc
 
             builder.Services.RegisterServices();
+
+            #endregion
+
+            #region html encoder
+
+            builder.Services.AddSingleton<HtmlEncoder>(
+                HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.BasicLatin, UnicodeRanges.Arabic })
+            );
 
             #endregion
 

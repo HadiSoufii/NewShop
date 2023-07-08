@@ -4,7 +4,7 @@ using Shop.Domain.ViewModels.Account;
 
 namespace Shop.MVC.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : SiteBaseController
     {
         #region constructor
 
@@ -37,9 +37,9 @@ namespace Shop.MVC.Controllers
                 switch (result)
                 {
                     case RegisterUserResult.Success:
-                        return View("SuccessRegister",new SuccessRegisterViewModel { FullName = register.FullName, Email = register.Email });
+                        return View("SuccessRegister", new SuccessRegisterViewModel { FullName = register.FullName, Email = register.Email });
                     case RegisterUserResult.ExistUser:
-                        ModelState.AddModelError("Email", "ایمیل وارد شده قبلا ثبت نام کرده است");
+                        TempData[InfoMessage] = "ایمیل وارد شده قبلا ثبت نام کرده است";
                         return View(register);
                 }
             }

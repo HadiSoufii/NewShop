@@ -94,11 +94,7 @@
         }
         else
         {
-            <div class="alert alert-warning">
-                <p>
-                    هیچ اطلاعاتی یافت نشد
-                </p>
-            </div>
+            <partial name="_NoItemFound" />
         }
         <div class="footer">
             <partial name="_AdminPagingPartial" model="@Model.GetCurrentPaging()" />

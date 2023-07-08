@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
 using Shop.Application.Convertors;
 using Shop.Application.Utils;
-using Shop.Application.ViewModels.Send;
+using Shop.Domain.ViewModels.Send;
 using TopLearn.Application.Senders;
 
 namespace Shop.Application.Senders

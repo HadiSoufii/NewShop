@@ -1,4 +1,5 @@
-﻿using Shop.Domain.Models.Common;
+﻿using Shop.Domain.Entities.Ticket;
+using Shop.Domain.Models.Common;
 using System.ComponentModel.DataAnnotations;
 
 namespace Shop.Domain.Models.Account
@@ -44,6 +45,14 @@ namespace Shop.Domain.Models.Account
 
         [Display(Name = " فعال / غیر فعال")]
         public bool IsBan { get; set; }
+
+        #endregion
+
+        #region relations
+
+        
+        public IEnumerable<TicketMessage>? TicketMessages { get; set; }
+        public IEnumerable<Ticket>? Tickets { get; set; }
 
         #endregion
     }
