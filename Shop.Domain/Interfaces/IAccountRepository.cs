@@ -12,7 +12,9 @@ namespace Shop.Domain.Interfaces
         Task UpdateAsync(User user);
         Task<User?> GetUserByEmailActiveCodeAsync(string emailActiveCode);
         Task SaveChangesAsync();
-        Task<bool> IsUserExistByEmailAndPasswordAsync(string email, string password);
+        Task<User> GetUserByEmailAndPasswordAsync(string email, string password);
         Task<FilterUsersInAdminViewModel> FilterUsers(FilterUsersInAdminViewModel filter);
+        Task<User> GetUserByEmailAsync(string email);
+
     }
 }

@@ -38,10 +38,19 @@
                 <!-- start of auth-box -->
                 <div class="auth-box ui-box">
                     <!-- start of auth-form -->
-                    <form action="#" class="auth-form">
+                    <form asp-controller="Account" asp-action="Login" method="post" class="auth-form">
                         <!-- start of form-element -->
                         <div class="form-element-row mb-5">
-                            <input type="text" class="form-control" placeholder="شماره موبایل یا ایمیل">
+                            <input type="text" class="form-control" placeholder="ایمیل" asp-for="Email">
+                            <span asp-validation-for="Email"></span>
+                        </div>
+                        <div class="form-element-row mb-5">
+                            <input type="text" class="form-control" placeholder="رمز عبور" asp-for="Password">
+                            <span asp-validation-for="Password"></span>
+                        </div>
+                        <div class="form-element-row mb-5">
+                            <label for="IsRememberMe" >مرا به خاطر بسپار</label>
+                            <input type="checkbox" asp-for="IsRememberMe">
                         </div>
                         <!-- end of form-element -->
                         <!-- start of form-element -->

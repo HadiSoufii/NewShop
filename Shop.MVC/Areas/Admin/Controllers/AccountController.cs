@@ -82,5 +82,13 @@ namespace Shop.MVC.Areas.Admin.Controllers
         }
 
         #endregion
+
+        #region delete user
+        //[HttpGet]
+        //public async Task<IActionResult> DeleteUser(int id)
+        //{
+
+        //}
+        #endregion
     }
 }

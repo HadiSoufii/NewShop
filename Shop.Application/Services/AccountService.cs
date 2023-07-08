@@ -15,6 +15,7 @@ namespace Shop.Application.Services
 
         private readonly IAccountRepository _accountRepository;
         private readonly ISendEmailSerivce _sendEmailSerivce;
+        
 
         public AccountService(IAccountRepository accountRepository, ISendEmailSerivce sendEmailSerivce)
         {
@@ -44,14 +45,17 @@ namespace Shop.Application.Services
             return RegisterUserResult.Success;
         }
 
-        public async Task<LoginViewModel.LoginResult> LoginAsync(LoginViewModel login)
+        public async Task<LoginResult> StatusUserForLoginAsync(LoginViewModel login)
         {
-            if (await _accountRepository.IsUserExistByEmailAndPasswordAsync(login.Email, login.Password))
-            {
-                return LoginViewModel.LoginResult.ExistUser;
-            }
+            var user = await _accountRepository.GetUserByEmailAndPasswordAsync(login.Email, login.Password.EncodePasswordMd5());
+            
+            if (user == null || user.IsDelete) return LoginResult.NotExistUser;
 
-            return LoginViewModel.LoginResult.Success;
+            if (!user.IsEmailActive) return LoginResult.IsNotActive;
+
+            if (user.IsBan) return LoginResult.IsBan;
+
+            return LoginResult.Success;
         }
 
         public async Task<bool> ActiveAccountByEmailActiveCodeAsync(string emailActiveCode)
@@ -214,5 +218,20 @@ namespace Shop.Application.Services
 
             return true;
         }
+
+        public Task<User> GetUserByEmailAsync(string email)
+        {
+            return _accountRepository.GetUserByEmailAsync(email.FixedEmail());
+        }
+
+
+        //public async Task<ForgotPasswordResult> GetForgotPasswordByEmailAsync(ForgotPasswordViewModel forgot)
+        //{
+        //    var user = await _accountRepository.GetUserByEmailAsync(forgot.Email);
+        //    if (user == null) return ForgotPasswordResult.NotFound;
+        //    var newPassword = new Random().Next(1, 99999999).ToString();
+        //    user.Password=_pa
+
+        //}
     }
 }

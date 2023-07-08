@@ -12,10 +12,15 @@ namespace Shop.Domain.ViewModels.Account
 
         public string Password { get; set; }
 
-        public enum LoginResult
-        {
-            Success,
-            ExistUser,
-        }
+        public bool IsRememberMe { get; set; }
+      
+    }
+    public enum LoginResult
+    {
+        Success,
+        NotExistUser,
+        IsNotActive,
+        IsBan
+
     }
 }
