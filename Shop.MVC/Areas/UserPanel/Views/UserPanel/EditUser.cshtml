@@ -6,30 +6,11 @@
 <div class="row mb-5">
     @await Component.InvokeAsync("UserSidebar")
     <div class="col-xl-9 col-lg-8 col-md-7">
-        <div class="alert alert-warning alert-dismissible fade show mb-5" role="alert">
-            <div>
-                سفارش شما در انتظار پرداخت است. برای جلوگیری از لغو سفارش، لطفا پرداخت را انجام دهید.
-                <a href="#" class="btn btn-sm btn-primary mx-3">سفارش های من</a>
-            </div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
         <div class="ui-box bg-white mb-5">
             <div class="ui-box-title">اطلاعات شخصی</div>
             <div class="ui-box-content">
                 <form asp-area="UserPanel" asp-controller="UserPanel" asp-action="EditUser" enctype="multipart/form-data">
                     <div class="row">
-                        @if (TempData["SuccessEdit"] != null && (bool)TempData["SuccessEdit"] == true)
-                        {
-                            <div class="alert alert-success p-5 m-3">
-                                اطلاعات شما با موفقیت ویرایش شد
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="alert alert-danger p-5 m-3">
-                                در ویرایش اطاعات خطایی رخ داد
-                            </div>
-                        }
                         <input type="hidden" asp-for="ImageName" />
                         <div class="form-element-row mb-3">
                             <label class="label fs-7">نام و نام خانوادگی</label>

@@ -2,7 +2,7 @@
 
 namespace Shop.MVC.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : SiteBaseController
     {
         #region index
 

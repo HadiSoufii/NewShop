@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Shop.Data.Context;
 using Shop.Ioc;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
 namespace Shop.MVC
 {

@@ -2,11 +2,10 @@
 
 namespace Shop.MVC.Areas.Admin.Controllers
 {
-    [Area("Admin")]
-    public class AdminController : Controller
+    public class AdminController : AdminBaseController
     {
 
-        [HttpGet("admin")]
+        [HttpGet("")]
         public IActionResult Index()
         {
             return View();

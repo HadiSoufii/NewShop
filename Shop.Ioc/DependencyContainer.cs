@@ -15,12 +15,15 @@ namespace Shop.Ioc
             #region repository
 
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<ITicketRepository, TicketRepository>();
+            services.AddScoped<ITicketMessageRepository, TicketMessageRepository>();
 
             #endregion
 
             #region service
 
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<ITicketService, TicketService>();
 
             #endregion
 

@@ -4,9 +4,8 @@ using Shop.Domain.ViewModels.Account;
 
 namespace Shop.MVC.Areas.Admin.Controllers
 {
-    [Area("Admin")]
     [Route("admin/user/")]
-    public class AccountController : Controller
+    public class AccountController : AdminBaseController
     {
         #region constructor
 
@@ -48,9 +47,11 @@ namespace Shop.MVC.Areas.Admin.Controllers
                 switch (resultCreateUser)
                 {
                     case CreateUserByAdminResult.Success:
+                        TempData[SuccessMessage] = "کاربر مورد نظر با موفقیت ثبت شد";
                         return RedirectToAction("Index");
                     case CreateUserByAdminResult.ExistUser:
                         ModelState.AddModelError("Email","ایمیل وارد شده قبلا ثبت نام کرده است");
+                        TempData[WarningMessage] = "ایمیل وارد شده قبلا ثبت نام کرده است";
                         break;
                 }
             }
@@ -69,14 +70,21 @@ namespace Shop.MVC.Areas.Admin.Controllers
             return View(updateUser);
         }
 
-        [HttpPost("update-user"), ValidateAntiForgeryToken]
+        [HttpPost("update-user/{id}"), ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateUser(UpdateUserByAdminViewModel updateUser)
         {
             if (ModelState.IsValid)
             {
                 var resultUpdate = await _accountService.UpdateUserByAdminAsync(updateUser);
                 if (resultUpdate)
+                {
+                    TempData[SuccessMessage] = "کاربر مورد نظر با موفقیت ویرایش شد";
                     return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData[ErrorMessage] = "خطایی در ویرایش کاربر وجود دارد";
+                }
             }
             return View(updateUser);
         }

@@ -23,7 +23,6 @@ namespace Shop.MVC.Areas.UserPanel.Controllers
         [HttpGet("")]
         public async Task<IActionResult> Index()
         {
-
             return View();
         }
 
@@ -34,7 +33,8 @@ namespace Shop.MVC.Areas.UserPanel.Controllers
         [HttpGet("edit-user")]
         public async Task<IActionResult> EditUser()
         {
-            int id = User.GetUserId();
+            //int id = User.GetUserId();
+            int id = 6;
             EditUserPanelViewModel model = await _accountService.GetUserByIdForEditUserPanelAsync(id);
             return View(model);
         }
@@ -46,9 +46,12 @@ namespace Shop.MVC.Areas.UserPanel.Controllers
             {
                 bool editResult = await _accountService.EditUserInUserPanelAsync(editUserPanel, User.GetUserId());
                 if (editResult)
-                    TempData["SuccessEdit"] = true;
+                {
+                    TempData[SuccessMessage] = "حساب کاربری با موفقیت ویرایش شد";
+                    return RedirectToAction("Index");
+                }
                 else
-                    TempData["SuccessEdit"] = false;
+                    TempData[ErrorMessage] = "مشکلی در ویرایش حساب پی آمده است";
 
             }
             return View(editUserPanel);

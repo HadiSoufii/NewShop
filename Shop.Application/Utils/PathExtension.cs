@@ -26,5 +26,13 @@
             Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Template/Images/User/Thumb/");
 
         #endregion
+
+        #region upload image tickets
+
+        public static string UploadImageTicket = "/Template/Images/Tickets/Origin/";
+        public static string UploadImageTicketServer =
+            Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Template/Images/Tickets/Origin/");
+
+        #endregion
     }
 }
