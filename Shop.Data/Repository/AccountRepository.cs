@@ -88,5 +88,11 @@ namespace Shop.Data.Repository
 
             return filter.SetPaging(pager).SetUsers(allEntities); ;
         }
+
+        public async Task<List<User>> FilterUserByEmail(string email)
+        {
+            return await _context.Users
+                .Where(u=> EF.Functions.Like(u.Email, $"%{email}%")).ToListAsync();
+        }
     }
 }

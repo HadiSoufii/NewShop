@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Interfaces;
+using Shop.Domain.Entities.Ticket;
 using Shop.Domain.ViewModels.Ticket;
+using Shop.MVC.PresentationExtensions;
 
 namespace Shop.MVC.Areas.Admin.Controllers
 {
@@ -38,6 +40,50 @@ namespace Shop.MVC.Areas.Admin.Controllers
             var ticket = await _ticketService.GetTicketForShowAdmin(ticketId);
             if (ticket == null) return NotFound();
             return View(ticket);
+        }
+
+        #endregion
+
+        #region create ticket
+
+        [HttpGet("ticket-create")]
+        public IActionResult TicketCreate()
+        {
+            return View();
+        }
+
+        [HttpPost("ticket-create"), ValidateAntiForgeryToken]
+        public async Task<IActionResult> TicketCreate(AddTicketByAdminViewModel ticket)
+        {
+            if (ModelState.IsValid)
+            {
+                //var userId = User.GetUserId();
+                var userId = 9;
+                var result = await _ticketService.AddTicketFromAdminForUser(ticket, userId);
+
+                switch (result)
+                {
+                    case AddTicketyAdminResult.Error:
+                        TempData[ErrorMessage] = "مشکلی در ثبت تیک وجود دارد";
+                        break;
+                    case AddTicketyAdminResult.Success:
+                        TempData[SuccessMessage] = "تیک شما با موفقیت ثبت شد";
+                        return RedirectToAction("Index");
+                }
+            }
+
+            return View(ticket);
+        }
+
+        #endregion
+
+        #region get user json
+
+        [HttpGet("user-autocomplete")]
+        public async Task<IActionResult> GetSellerProductsJson(string email)
+        {
+            var data = await _ticketService.FilterUserByEmailForCreateTicketFromAdmin(email);
+            return new JsonResult(data);
         }
 
         #endregion
@@ -80,7 +126,7 @@ namespace Shop.MVC.Areas.Admin.Controllers
                 TempData[SuccessMessage] = "تیکت با موفقیت بسته شد";
             else
                 TempData[ErrorMessage] = "تیکیتی پیدا نشد";
-            return View("Index", new FilterTicketViewModel());
+            return RedirectToAction("Index");
         }
         
         #endregion

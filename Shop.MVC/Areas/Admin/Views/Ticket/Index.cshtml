@@ -65,7 +65,7 @@
                 <label>
                     اولویت ها
                 </label>
-                <select class="form-control" asp-for="TicketSection" asp-items="@(Html.GetEnumSelectList<TicketSection>())">
+                <select class="form-control" asp-for="TicketPriority" asp-items="@(Html.GetEnumSelectList<TicketPriority>())">
                     <option value="null">
                         همه اولویت ها
                     </option>
@@ -77,7 +77,7 @@
                 <label>
                     وضعیت تیکت
                 </label>
-                <select class="form-control" asp-for="TicketSection" asp-items="@(Html.GetEnumSelectList<TicketSection>())">
+                <select class="form-control" asp-for="TicketState" asp-items="@(Html.GetEnumSelectList<TicketState>())">
                     <option value="null">
                         همه وضعیت ها
                     </option>
