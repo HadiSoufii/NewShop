@@ -19,5 +19,7 @@ namespace Shop.Application.Interfaces
         Task<bool> UpdateUserByAdminAsync(UpdateUserByAdminViewModel updateUser);
         Task<User> GetUserByEmailAsync(string email);
         Task<ForgotPasswordResult> GetForgotPasswordByEmailAsync(ForgotPasswordViewModel forgot);
+        Task<bool> DeleteUserById(int id);
+        Task<bool> ResetPassword(ResetPasswordViewModel reset, string activeCode);
     }
 }

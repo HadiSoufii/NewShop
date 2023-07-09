@@ -50,7 +50,7 @@ namespace Shop.MVC.Areas.Admin.Controllers
                         TempData[SuccessMessage] = "کاربر مورد نظر با موفقیت ثبت شد";
                         return RedirectToAction("Index");
                     case CreateUserByAdminResult.ExistUser:
-                        ModelState.AddModelError("Email","ایمیل وارد شده قبلا ثبت نام کرده است");
+                        ModelState.AddModelError("Email", "ایمیل وارد شده قبلا ثبت نام کرده است");
                         TempData[WarningMessage] = "ایمیل وارد شده قبلا ثبت نام کرده است";
                         break;
                 }
@@ -92,11 +92,20 @@ namespace Shop.MVC.Areas.Admin.Controllers
         #endregion
 
         #region delete user
-        //[HttpGet]
-        //public async Task<IActionResult> DeleteUser(int id)
-        //{
-
-        //}
+        [HttpGet("delete-user/{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var result = await _accountService.DeleteUserById(id);
+            if (result)
+            {
+                TempData[SuccessMessage] = "کاربر مورد نظر با موفقیت حذف گردید";
+            }
+            else
+            {
+                TempData[ErrorMessage] = "کاربر مورد نظر یافت نشد";
+            }
+            return RedirectToAction("Index");
+        }
         #endregion
     }
 }

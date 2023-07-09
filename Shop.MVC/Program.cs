@@ -48,6 +48,12 @@ namespace Shop.MVC
 
             #endregion
 
+            #region html encoder
+            builder.Services.AddSingleton<HtmlEncoder>(
+                HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.BasicLatin, UnicodeRanges.Arabic })
+                );
+            #endregion
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

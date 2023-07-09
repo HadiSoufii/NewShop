@@ -15,7 +15,7 @@ namespace Shop.Application.Services
 
         private readonly IAccountRepository _accountRepository;
         private readonly ISendEmailSerivce _sendEmailSerivce;
-        
+
 
         public AccountService(IAccountRepository accountRepository, ISendEmailSerivce sendEmailSerivce)
         {
@@ -48,7 +48,7 @@ namespace Shop.Application.Services
         public async Task<LoginResult> StatusUserForLoginAsync(LoginViewModel login)
         {
             var user = await _accountRepository.GetUserByEmailAndPasswordAsync(login.Email, login.Password.EncodePasswordMd5());
-            
+
             if (user == null || user.IsDelete) return LoginResult.NotExistUser;
 
             if (!user.IsEmailActive) return LoginResult.IsNotActive;
@@ -131,7 +131,7 @@ namespace Shop.Application.Services
         public async Task<CreateUserByAdminResult> AddUserByAdminAsync(CreateUserByAdminViewModel createUser)
         {
             if (await _accountRepository.IsUserExistByEmailAsync(createUser.Email))
-                return CreateUserByAdminResult.ExistUser;            
+                return CreateUserByAdminResult.ExistUser;
 
             User user = new User
             {
@@ -182,7 +182,7 @@ namespace Shop.Application.Services
                 Mobile = user.Mobile,
             };
         }
-        
+
         public async Task<bool> UpdateUserByAdminAsync(UpdateUserByAdminViewModel updateUser)
         {
             User? user = await _accountRepository.GetUserByIdAsync(updateUser.Id);
@@ -194,7 +194,7 @@ namespace Shop.Application.Services
             user.Mobile = updateUser.Mobile;
             user.IsEmailActive = updateUser.IsEmailActive;
 
-            if(!string.IsNullOrEmpty(updateUser.Password))
+            if (!string.IsNullOrEmpty(updateUser.Password))
                 user.Password = updateUser.Password.EncodePasswordMd5();
 
             #region insert image
@@ -227,13 +227,41 @@ namespace Shop.Application.Services
         }
 
 
-        //public async Task<ForgotPasswordResult> GetForgotPasswordByEmailAsync(ForgotPasswordViewModel forgot)
-        //{
-        //    var user = await _accountRepository.GetUserByEmailAsync(forgot.Email);
-        //    if (user == null) return ForgotPasswordResult.NotFound;
-        //    var newPassword = new Random().Next(1, 99999999).ToString();
-        //    user.Password=_pa
+        public async Task<bool> DeleteUserById(int id)
+        {
+            var user = await _accountRepository.GetUserByIdAsync(id);
+            if (user == null || user.IsDelete)
+            {
+                return false;
+            }
+            user.IsDelete = true;
+            await _accountRepository.UpdateAsync(user);
+            return true;
+        }
 
-        //}
+
+        public async Task<ForgotPasswordResult> GetForgotPasswordByEmailAsync(ForgotPasswordViewModel forgot)
+        {
+            var user = await _accountRepository.GetUserByEmailAsync(forgot.Email);
+            if (user == null) return ForgotPasswordResult.NotFound;
+            if (user.IsDelete) return ForgotPasswordResult.Deleted;
+            if (user.IsBan) return ForgotPasswordResult.Banded;
+            if (user.IsEmailActive == false) return ForgotPasswordResult.NotEmailActive;
+
+
+            //SenEmail
+            _sendEmailSerivce.SendActiveCodeByEmail(user.Email, user.FullName, user.EmailActiveCode, "_ActiveEmailForgotPasswordView", "تغییر کلمه عبور حساب کاربری");
+            return ForgotPasswordResult.Success;
+        }
+
+        public async Task<bool> ResetPassword(ResetPasswordViewModel reset, string activeCode)
+        {
+            var user = await _accountRepository.GetUserByEmailActiveCodeAsync(activeCode);
+            if (user == null) return false;
+            user.Password = reset.Password.EncodePasswordMd5();
+            user.EmailActiveCode= Guid.NewGuid().ToString();
+            await _accountRepository.UpdateAsync(user);
+            return true;
+        }
     }
 }

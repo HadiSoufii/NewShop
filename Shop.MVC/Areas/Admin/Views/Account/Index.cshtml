@@ -84,8 +84,11 @@
                             </td>
                             <td>
                                 <a class="btn btn-success" asp-area="Admin" asp-controller="Account" asp-action="UpdateUser" asp-route-id="@user.Id">ویرایش کاربر</a>
-                                <a class="btn btn-danger" >حذف کاربر</a>
+                                @if (user.IsDelete == false)
+                                {
+                                    <a class="btn btn-danger" asp-area="Admin" asp-controller="Account" asp-action="DeleteUser" asp-route-id="@user.Id">حذف کاربر</a>
 
+                                }
                             </td>
                         </tr>
                     }

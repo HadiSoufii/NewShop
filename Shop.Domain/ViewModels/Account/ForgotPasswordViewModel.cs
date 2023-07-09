@@ -21,7 +21,9 @@ namespace Shop.Domain.ViewModels.Account
     {
         Success,
         NotFound,
-        Error
+        Deleted,
+        Banded,
+        NotEmailActive
 
     }
 }

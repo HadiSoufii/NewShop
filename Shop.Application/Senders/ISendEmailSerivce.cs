@@ -9,6 +9,7 @@ namespace Shop.Application.Senders
     public interface ISendEmailSerivce
     {
         void SendActiveCodeByEmail(string email,string fullName, string activeCode, string viewName, string title);
+        void SendActiveCodeByEmailForForgotPassword(string email, string activeCode, string viewName, string title);
     }
 
     public class SendEmailSerivce : ISendEmailSerivce
@@ -27,6 +28,18 @@ namespace Shop.Application.Senders
             SendEmailViewModel emailModel = new SendEmailViewModel
             {
                 FullName = fullName,
+                ActiveCode = activeCode
+            };
+            string body = _viewRender.RenderToStringAsync(viewName, emailModel);
+            SendEmail.Send(email, title, body);
+        }
+
+        public void SendActiveCodeByEmailForForgotPassword(string email, string activeCode, string viewName, string title)
+        {
+            email = email.FixedEmail();
+
+            SendEmailForForgotPasswordViewModel emailModel = new SendEmailForForgotPasswordViewModel
+            {
                 ActiveCode = activeCode
             };
             string body = _viewRender.RenderToStringAsync(viewName, emailModel);

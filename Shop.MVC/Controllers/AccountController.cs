@@ -136,28 +136,70 @@ namespace Shop.MVC.Controllers
         }
         #endregion
 
-        #region resetPassword
-        //Route["forgotpassword"]
-        //public IActionResult ResetPassword()
-        //{
-        //    return View();
-        //}
+        #region forgot password
+        [HttpGet("forgot-password")]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
 
-        //[HttpPost("forgotpassword")]
-        //public async Task<IActionResult> ResetPassword(ForgotPasswordViewModel forgot)
-        //{
-        //    if (!ModelState.IsValid)
-        //        return View(forgot);
-        //    var user=_accountService.GetUserByEmailAsync(forgot.Email);
-        //    if (user == null)
-        //    {
-        //        ModelState.AddModelError("Email", "کاربری یافت نشد");
-        //        return View(forgot);
-        //    }
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel forgot)
+        {
+            if(ModelState.IsValid)
+            {
+                var result = await _accountService.GetForgotPasswordByEmailAsync(forgot);
+                switch (result)
+                {
+                    case ForgotPasswordResult.Success:
+                        TempData[SuccessMessage] = "ایمیل با موفقیت ارسال گردید";
+                        break;
+                    case ForgotPasswordResult.NotFound:
+                        TempData[ErrorMessage] = "کاربر یافت نشد";
+                        break;
+                    case ForgotPasswordResult.Deleted:
+                        TempData[ErrorMessage] = "کاربر یافت نشد ";
+                        break;
+                    case ForgotPasswordResult.Banded:
+                        TempData[InfoMessage] = "حساب کاربری شما مسدود می باشد";
+                        break;
+                    case ForgotPasswordResult.NotEmailActive:
+                        TempData[InfoMessage] = "حساب کاربری شما فعال نمی باشد";
+                        break;
+               
+                }
+            }
+            return View(forgot);
+        }
+        #endregion
 
+        #region reset password
 
+        [HttpGet("reset-password/{activeCode}")]
+        public async Task<IActionResult> ResetPassword(string activeCode)
+        {
+            return View();
+        }
 
-        //}
+        [HttpPost("reset-password/{activeCode}")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel reset, string activeCode)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _accountService.ResetPassword(reset, activeCode);
+                if (result)
+                {
+                    TempData[SuccessMessage] = "کلمه عبور با موفقیت تغییر یافت";
+                    return RedirectToAction("Login");
+                }
+                else
+                {
+                    TempData[ErrorMessage] = "عملیات با خطا مواجه گردید";
+                }
+            }
+            
+            return View(reset);
+        }
         #endregion
     }
 }
