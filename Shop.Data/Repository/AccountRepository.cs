@@ -93,5 +93,11 @@ namespace Shop.Data.Repository
         {
             return await _context.Users.SingleOrDefaultAsync(c => c.Email == email);
         }
+
+        public async Task<List<User>> FilterUserByEmail(string email)
+        {
+            return await _context.Users
+                .Where(u=> EF.Functions.Like(u.Email, $"%{email}%")).ToListAsync();
+        }
     }
 }

@@ -12,11 +12,43 @@ namespace Shop.Application.Services
 
         private readonly ITicketRepository _ticketRepository;
         private readonly ITicketMessageRepository _ticketMessageRepository;
+        private readonly IAccountRepository _accountRepository;
 
-        public TicketService(ITicketRepository ticketRepository, ITicketMessageRepository ticketMessageRepository)
+        public TicketService(ITicketRepository ticketRepository, ITicketMessageRepository ticketMessageRepository, IAccountRepository accountRepository)
         {
             _ticketRepository = ticketRepository;
             _ticketMessageRepository = ticketMessageRepository;
+            _accountRepository = accountRepository;
+        }
+
+        public async Task<AddTicketyAdminResult> AddTicketFromAdminForUser(AddTicketByAdminViewModel ticket, int userIdTicketAdmin)
+        {
+            if (string.IsNullOrEmpty(ticket.Text)) return AddTicketyAdminResult.Error;
+
+            // add ticket
+            var newTicket = new Ticket
+            {
+                OwnerId = ticket.UserId,
+                IsReadByAdmin = true,
+                TicketPriority = ticket.TicketPriority,
+                Title = ticket.Title,
+                TicketSection = ticket.TicketSection,
+                TicketState = TicketState.Answered
+            };
+
+            await _ticketRepository.AddTicketAsync(newTicket);
+
+            // add ticket message
+            var newMessage = new TicketMessage
+            {
+                TicketId = newTicket.Id,
+                Text = ticket.Text,
+                SenderId = userIdTicketAdmin,
+            };
+
+            await _ticketMessageRepository.AddTicketMessageAsync(newMessage);
+
+            return AddTicketyAdminResult.Success;
         }
 
         #endregion
@@ -107,6 +139,11 @@ namespace Shop.Application.Services
         public async Task<FilterTicketViewModel> FilterTickets(FilterTicketViewModel filter)
         {
             return await _ticketRepository.FilterTickets(filter);
+        }
+
+        public async Task<List<User>> FilterUserByEmailForCreateTicketFromAdmin(string email)
+        {
+            return await _accountRepository.FilterUserByEmail(email);
         }
 
         public async Task<TicketDetailViewModel?> GetTicketForShow(int ticketId, int userId)

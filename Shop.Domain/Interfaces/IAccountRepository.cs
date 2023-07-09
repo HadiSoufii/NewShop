@@ -16,5 +16,6 @@ namespace Shop.Domain.Interfaces
         Task<FilterUsersInAdminViewModel> FilterUsers(FilterUsersInAdminViewModel filter);
         Task<User> GetUserByEmailAsync(string email);
 
+        Task<List<User>> FilterUserByEmail(string email);
     }
 }
