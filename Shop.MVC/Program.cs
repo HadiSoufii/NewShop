@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Shop.Data.Context;
 using Shop.Ioc;
@@ -34,11 +35,20 @@ namespace Shop.MVC
 
             #endregion
 
-            #region html encoder
+            #region authentication
 
-            builder.Services.AddSingleton<HtmlEncoder>(
-                HtmlEncoder.Create(allowedRanges: new[] { UnicodeRanges.BasicLatin, UnicodeRanges.Arabic })
-            );
+            builder.Services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme= CookieAuthenticationDefaults.AuthenticationScheme;
+                option.DefaultChallengeScheme= CookieAuthenticationDefaults.AuthenticationScheme;
+                option.DefaultSignInScheme= CookieAuthenticationDefaults.AuthenticationScheme;
+            }).AddCookie(option =>
+            {
+                option.LoginPath = "/login";
+                option.LogoutPath = "/log-out";
+                option.ExpireTimeSpan=TimeSpan.FromDays(30);
+            });
+
 
             #endregion
 

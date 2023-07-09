@@ -59,9 +59,9 @@ namespace Shop.Data.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> IsUserExistByEmailAndPasswordAsync(string email, string password)
+        public async Task<User> GetUserByEmailAndPasswordAsync(string email, string password)
         {
-            return await _context.Users.AnyAsync(c=>c.Email== email && c.Password == password);
+            return await _context.Users.SingleOrDefaultAsync(c=>c.Email== email && c.Password == password);
         }
 
         public async Task<FilterUsersInAdminViewModel> FilterUsers(FilterUsersInAdminViewModel filter)
@@ -87,6 +87,11 @@ namespace Shop.Data.Repository
             #endregion
 
             return filter.SetPaging(pager).SetUsers(allEntities); ;
+        }
+
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            return await _context.Users.SingleOrDefaultAsync(c => c.Email == email);
         }
 
         public async Task<List<User>> FilterUserByEmail(string email)

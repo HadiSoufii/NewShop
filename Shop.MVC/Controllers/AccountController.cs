@@ -1,6 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using Shop.Application.Interfaces;
 using Shop.Domain.ViewModels.Account;
+using System.Security.Claims;
 
 namespace Shop.MVC.Controllers
 {
@@ -61,24 +65,49 @@ namespace Shop.MVC.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginViewModel login)
         {
-            //if (!ModelState.ValidationState)
-            //{
-            //    return View(login);
-            //}
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var result = await _accountService.LoginAsync(login);
-                switch (result)
-                {
-                    case LoginViewModel.LoginResult.Success:
-                        return View(login);
-                    case LoginViewModel.LoginResult.ExistUser:
-                        return View(login);
-                    default:
-                        break;
-
-                }
+                return View(login);
             }
+      
+            var user =await _accountService.StatusUserForLoginAsync(login);
+
+
+            switch (user)
+            {
+                case LoginResult.Success:
+                    var getUser=await _accountService.GetUserByEmailAsync(login.Email);
+
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.NameIdentifier,getUser.Id.ToString()),
+                        new Claim(ClaimTypes.Email,getUser.Email),
+                        new Claim(ClaimTypes.Name,getUser.FullName),
+                    };
+
+                    var identity=new ClaimsIdentity(claims,CookieAuthenticationDefaults.AuthenticationScheme);
+                    var principal = new ClaimsPrincipal(identity);
+                    var properties = new AuthenticationProperties
+                    {
+                        IsPersistent = login.IsRememberMe
+                    };
+
+                    await HttpContext.SignInAsync(principal, properties);
+
+                    return RedirectToAction("Index","Home");
+                case LoginResult.NotExistUser:
+                    ModelState.AddModelError("Email", "کاربر مورد نظر یافت نشد");
+                    break;
+                case LoginResult.IsNotActive:
+                    ModelState.AddModelError("Email", "حساب کاربری شما فعال نمی باشد");
+                    break;
+                case LoginResult.IsBan:
+                    ModelState.AddModelError("Email", "حساب کاربری شما مسدود می باشد");
+                    break;
+                default:
+                    break;
+            }
+
             return View(login);
         }
 
@@ -94,6 +123,41 @@ namespace Shop.MVC.Controllers
             return View();
         }
 
+        #endregion
+
+        #region logOut
+        [Route("Logout")]
+        public IActionResult Logout()
+        {
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+           // return await _accountService.si
+            //var user = await _accountService.GetUserByIdAsync();
+            return RedirectToAction("/Login"); 
+        }
+        #endregion
+
+        #region resetPassword
+        //Route["forgotpassword"]
+        //public IActionResult ResetPassword()
+        //{
+        //    return View();
+        //}
+
+        //[HttpPost("forgotpassword")]
+        //public async Task<IActionResult> ResetPassword(ForgotPasswordViewModel forgot)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return View(forgot);
+        //    var user=_accountService.GetUserByEmailAsync(forgot.Email);
+        //    if (user == null)
+        //    {
+        //        ModelState.AddModelError("Email", "کاربری یافت نشد");
+        //        return View(forgot);
+        //    }
+
+
+
+        //}
         #endregion
     }
 }

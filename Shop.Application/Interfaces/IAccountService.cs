@@ -1,4 +1,5 @@
-﻿using Shop.Domain.ViewModels.Account;
+﻿using Shop.Domain.Models.Account;
+using Shop.Domain.ViewModels.Account;
 using Shop.Domain.ViewModels.UserPanel;
 
 namespace Shop.Application.Interfaces
@@ -7,7 +8,7 @@ namespace Shop.Application.Interfaces
     {
         Task<RegisterUserResult> AddUserAsync(RegisterUserViewModel register);
 
-        Task<LoginViewModel.LoginResult> LoginAsync(LoginViewModel login);
+        Task<LoginResult> StatusUserForLoginAsync(LoginViewModel login);
         Task<bool> ActiveAccountByEmailActiveCodeAsync(string emailActiveCode);
         Task<UserInformationViewModel> GetUserByIdForUserPanelAsync(int id);
         Task<EditUserPanelViewModel> GetUserByIdForEditUserPanelAsync(int id);
@@ -16,5 +17,7 @@ namespace Shop.Application.Interfaces
         Task<CreateUserByAdminResult> AddUserByAdminAsync(CreateUserByAdminViewModel createUser);
         Task<UpdateUserByAdminViewModel?> GetUserForEditByAdminAsync(int id);
         Task<bool> UpdateUserByAdminAsync(UpdateUserByAdminViewModel updateUser);
+        Task<User> GetUserByEmailAsync(string email);
+        Task<ForgotPasswordResult> GetForgotPasswordByEmailAsync(ForgotPasswordViewModel forgot);
     }
 }
