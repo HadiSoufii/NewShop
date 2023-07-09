@@ -250,7 +250,7 @@ namespace Shop.Application.Services
 
 
             //SenEmail
-            _sendEmailSerivce.SendActiveCodeByEmail(user.Email, user.FullName, user.EmailActiveCode, "_ActiveEmailForgotPasswordView", "تغییر کلمه عبور حساب کاربری");
+            _sendEmailSerivce.SendActiveCodeByEmailForForgotPassword(user.Email, user.EmailActiveCode, "_ActiveEmailForgotPasswordView", "تغییر کلمه عبور حساب کاربری");
             return ForgotPasswordResult.Success;
         }
 

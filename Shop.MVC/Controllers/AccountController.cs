@@ -69,14 +69,14 @@ namespace Shop.MVC.Controllers
             {
                 return View(login);
             }
-      
-            var user =await _accountService.StatusUserForLoginAsync(login);
+
+            var user = await _accountService.StatusUserForLoginAsync(login);
 
 
             switch (user)
             {
                 case LoginResult.Success:
-                    var getUser=await _accountService.GetUserByEmailAsync(login.Email);
+                    var getUser = await _accountService.GetUserByEmailAsync(login.Email);
 
                     var claims = new List<Claim>
                     {
@@ -85,7 +85,7 @@ namespace Shop.MVC.Controllers
                         new Claim(ClaimTypes.Name,getUser.FullName),
                     };
 
-                    var identity=new ClaimsIdentity(claims,CookieAuthenticationDefaults.AuthenticationScheme);
+                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var principal = new ClaimsPrincipal(identity);
                     var properties = new AuthenticationProperties
                     {
@@ -94,7 +94,7 @@ namespace Shop.MVC.Controllers
 
                     await HttpContext.SignInAsync(principal, properties);
 
-                    return RedirectToAction("Index","Home");
+                    return RedirectToAction("Index", "Home");
                 case LoginResult.NotExistUser:
                     ModelState.AddModelError("Email", "کاربر مورد نظر یافت نشد");
                     break;
@@ -125,18 +125,19 @@ namespace Shop.MVC.Controllers
 
         #endregion
 
-        #region logOut
-        [Route("Logout")]
-        public IActionResult Logout()
+        #region log out
+
+        [HttpGet("Log-out")]
+        public async Task<IActionResult> Logout()
         {
-            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-           // return await _accountService.si
-            //var user = await _accountService.GetUserByIdAsync();
-            return RedirectToAction("/Login"); 
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Login");
         }
+
         #endregion
 
         #region forgot password
+
         [HttpGet("forgot-password")]
         public IActionResult ForgotPassword()
         {
@@ -146,7 +147,7 @@ namespace Shop.MVC.Controllers
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel forgot)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var result = await _accountService.GetForgotPasswordByEmailAsync(forgot);
                 switch (result)
@@ -166,17 +167,18 @@ namespace Shop.MVC.Controllers
                     case ForgotPasswordResult.NotEmailActive:
                         TempData[InfoMessage] = "حساب کاربری شما فعال نمی باشد";
                         break;
-               
+
                 }
             }
             return View(forgot);
         }
+
         #endregion
 
         #region reset password
 
         [HttpGet("reset-password/{activeCode}")]
-        public async Task<IActionResult> ResetPassword(string activeCode)
+        public IActionResult ResetPassword(string activeCode)
         {
             return View();
         }
@@ -197,7 +199,7 @@ namespace Shop.MVC.Controllers
                     TempData[ErrorMessage] = "عملیات با خطا مواجه گردید";
                 }
             }
-            
+
             return View(reset);
         }
         #endregion
