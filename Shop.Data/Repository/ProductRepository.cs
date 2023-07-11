@@ -80,6 +80,12 @@ namespace Shop.Data.Repository
         {
             return await _context.Products.AnyAsync(s=> s.Id == productId);
         }
+
+        public async Task<List<Product>> FilterProductByTitle(string title)
+        {
+            return await _context.Products
+                .Where(u => EF.Functions.Like(u.Title, $"%{title}%")).ToListAsync();
+        }
     }
 }
     

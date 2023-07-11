@@ -18,6 +18,17 @@ namespace Shop.Domain.Models.Product
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
 
+        [Display(Name = "محصول")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        public int ProductId { get; set; }
+
+        #endregion
+
+        #region relations
+
+
+        public Product Product { get; set; }
+
         #endregion
 
     }

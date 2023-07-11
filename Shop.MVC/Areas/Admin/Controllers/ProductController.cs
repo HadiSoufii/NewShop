@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Shop.Application.Interfaces;
 using Shop.Domain.ViewModels.Product;
 
@@ -31,8 +32,10 @@ namespace Shop.MVC.Areas.Admin.Controllers
 
         #region create product
         [HttpGet("product-create")]
-        public IActionResult CreateProduct()
+        public async Task<IActionResult> CreateProduct()
         {
+            var categories = await _productService.GetAllProductCategories();
+            ViewData["Categories"] = new SelectList(categories, "Value", "Text");
             return View();
         }
 
@@ -69,6 +72,10 @@ namespace Shop.MVC.Areas.Admin.Controllers
                 TempData[ErrorMessage] = "محصول مورد نظر پیدا نشد";
                 return RedirectToAction("Index");
             }
+
+            var categories = await _productService.GetAllProductCategories();
+            ViewData["Categories"] = new SelectList(categories, "Value", "Text",new { Value = productId });
+
             return View(editProduct);
         }
 

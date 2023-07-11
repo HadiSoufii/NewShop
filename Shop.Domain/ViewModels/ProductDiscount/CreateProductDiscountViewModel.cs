@@ -20,6 +20,10 @@ namespace Shop.Domain.ViewModels.ProductDiscount
         [Display(Name = "تا تاریخ")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public DateTime EndTime { get; set; }
+
+        [Display(Name = "محصول")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        public int ProductId { get; set; }
     }
 
     public enum CreateProductDiscountResult

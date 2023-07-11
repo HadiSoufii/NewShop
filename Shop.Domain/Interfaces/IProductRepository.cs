@@ -13,5 +13,6 @@ namespace Shop.Domain.Interfaces
         Task<FilterProductViewModel> FilterProduct(FilterProductViewModel filter);
         Task<string> GetProductTitleByProductId(int productId);
         Task<bool> IsExistProductById(int productId);
+        Task<List<Product>> FilterProductByTitle(string title);
     }
 }

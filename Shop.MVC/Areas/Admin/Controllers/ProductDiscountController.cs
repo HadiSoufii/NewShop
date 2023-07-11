@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Interfaces;
+using Shop.Application.Services;
 using Shop.Domain.ViewModels.ProductDiscount;
 
 namespace Shop.MVC.Areas.Admin.Controllers
@@ -58,6 +59,17 @@ namespace Shop.MVC.Areas.Admin.Controllers
 
         #endregion
 
+        #region get product json
+
+        [HttpGet("product-autocomplete")]
+        public async Task<IActionResult> GetSellerProductsJson(string title)
+        {
+            var data = await _productService.FilterProductByTitleForCreateProductDiscountFromAdmin(title);
+            return new JsonResult(data);
+        }
+
+        #endregion
+
         #region edit discount
 
         [HttpGet("product-discount-edit/{productDiscountId}")]
@@ -78,12 +90,20 @@ namespace Shop.MVC.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var res = await _productService.EditProductDiscountInAdmin(productDiscount, productDiscountId);
-                if (res)
+
+                switch (res)
                 {
-                    TempData[SuccessMessage] = "کد تخفیف با موفقیت ویرایش شد";
-                    return RedirectToAction("Index");
+                    case UpdateProductDiscountResult.Success:
+                        TempData[SuccessMessage] = "کد تخفیف با موفقیت ویرایش شد";
+                        return RedirectToAction("Index");
+                    case UpdateProductDiscountResult.ExistDiscount:
+                        TempData[ErrorMessage] = "یک کد تخفیف با همین کد وجود دارد، لطفا کد تغییر دهید";
+                        break;
+                    case UpdateProductDiscountResult.NotFoundDiscount:
+                        TempData[ErrorMessage] = "کد تخفیف برای ویرایش پیدا نشد";
+                        break;
+                    
                 }
-                TempData[ErrorMessage] = "در ویرایش کد تخفیف مشکلی به وجود آمد";
             }
             return View(productDiscount);
         }

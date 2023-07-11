@@ -21,6 +21,8 @@ namespace Shop.Domain.Models.Product
 
         public ProductCategory? Parent { get; set; }
 
+        public IEnumerable<Product> Product { get; set; }
+
         #endregion
     }
 }

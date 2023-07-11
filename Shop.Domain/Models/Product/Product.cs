@@ -24,11 +24,18 @@ namespace Shop.Domain.Models.Product
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string Description { get; set; } = string.Empty;
 
+        [Display(Name ="دسته بندی")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        public int ProductCategoryId { get; set; }
+
         #endregion
 
         #region relations
 
+        public ProductCategory ProductCategory { get; set; }
+
         public IEnumerable<ProductGallery> ProductGalleries { get; set; }
+        public IEnumerable<ProductDiscount> ProductDiscounts { get; set; }
 
         #endregion
     }

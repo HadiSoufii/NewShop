@@ -19,8 +19,38 @@
     <!-- /Page Breadcrumb -->
 }
 
+@section headerSection {
+    <link rel="stylesheet" href="/lib/EasyAutocomplete/easy-autocomplete.min.css" />
+    <link rel="stylesheet" href="/lib/EasyAutocomplete/easy-autocomplete.themes.min.css" />
+}
+
 @section FooterSection {
     <partial name="_JqueryValidators" />
+    <script src="/lib/EasyAutocomplete/jquery.easy-autocomplete.min.js"></script>
+    <script>
+
+        var options = {
+            url: function (phrase) {
+                return "/admin/product-discount/product-autocomplete?title=" + phrase;
+            },
+            getValue: function (element) {
+                return element.title;
+            },
+            list: {
+                match: {
+                    enabled: true
+                },
+                onSelectItemEvent: function () {
+                    var value = $("#ProductTitle").getSelectedItemData().id;
+
+                    $("#ProductId").val(value).trigger("change");
+                }
+            },
+            theme: "square"
+        };
+
+        $("#ProductTitle").easyAutocomplete(options);
+    </script>
     <script>
 
         $("#StartTime").persianDatepicker({
@@ -95,9 +125,17 @@
             @ViewData["Title"]
         </div>
         <form asp-area="Admin" asp-controller="ProductDiscount" asp-action="EditProductDiscount" method="post">
+
+            <input type="hidden" asp-for="ProductId" />
+            <div class="form-group">
+                <label>محصول مورد نظر</label>
+                <input class="form-control" id="ProductTitle" value="@Model.ProductTitle">
+                <span class="text-danger" asp-validation-for="ProductId" style="margin-bottom:10px; display:block;"></span>
+            </div>
+
             <div class="form-group">
                 <label>کد تخفیف</label>
-                <input class="form-control" asp-for="DiscountCode" readonly>
+                <input class="form-control" asp-for="DiscountCode">
                 <span class="text-danger" asp-validation-for="DiscountCode" style="margin-bottom:10px; display:block;"></span>
             </div>
             <hr />

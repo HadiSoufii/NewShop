@@ -25,8 +25,11 @@ namespace Shop.Domain.ViewModels.Product
         public string ImageName { get; set; } = string.Empty;
 
         [Display(Name = "تصویر محصول")]
-        [Required(ErrorMessage = "لطفا {0} را بارگذاری کنید")]
         public IFormFile? ImageProduct { get; set; }
+
+        [Display(Name = "دسته بندی محصول")]
+        [Required(ErrorMessage = "لطفا {0} را بارگذاری کنید")]
+        public int CategoryId { get; set; }
     }
     public enum UpdateProductResult
     {

@@ -77,6 +77,13 @@
             <hr />
 
             <div class="form-element-row mb-3">
+                <label>زیر گروه</label>
+                <select class="form-control" asp-for="CategoryId" asp-items="@(ViewData["Categories"] as SelectList)"></select>
+                <span class="text-danger" asp-validation-for="CategoryId" style="margin-bottom:10px; display:block;"></span>
+            </div>
+            <hr />
+
+            <div class="form-element-row mb-3">
                 <label>
                     توضیحات محصول
                 </label>

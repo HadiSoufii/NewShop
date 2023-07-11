@@ -1,4 +1,5 @@
-﻿using Shop.Domain.Models.Product;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Shop.Domain.Models.Product;
 using Shop.Domain.ViewModels.Product;
 using Shop.Domain.ViewModels.ProductCategory;
 using Shop.Domain.ViewModels.ProductDiscount;
@@ -16,6 +17,7 @@ namespace Shop.Application.Interfaces
         Task<UpdateProductResult> EditProductinAdmin(UpdateProductViewModel productViewModel);
         Task<bool> DeleteProductByIdInAdmin(int productId);
         Task<string> GetProductTitleByProductId(int productId);
+        Task<List<Product>> FilterProductByTitleForCreateProductDiscountFromAdmin(string title);
 
         #endregion
 
@@ -27,6 +29,7 @@ namespace Shop.Application.Interfaces
         Task<bool> UpdateProductCategoryInAdmin(CreateOrEditProductCategoryViewModel createProductCategory, int productCategoryId);
         Task<bool> DeleteProductCategoryInAdmin(int productCategoryId);
         Task<ProductCategory> GetProductCategoryById(int productCategoryId);
+        Task<List<SelectListItem>> GetAllProductCategories();
 
         #endregion
 
@@ -35,7 +38,7 @@ namespace Shop.Application.Interfaces
         Task<FilterProductDiscountViewModel> FilterProductDiscountInAdmin(FilterProductDiscountViewModel filter);
         Task<CreateProductDiscountResult> CreateProductDiscountInAdmin(CreateProductDiscountViewModel createProductDiscount);
         Task<UpdateProductDiscountViewModel?> GetProductDiscountForEditInAdmin(int productDiscountId);
-        Task<bool> EditProductDiscountInAdmin(UpdateProductDiscountViewModel updateProductDiscount, int productDiscountId);
+        Task<UpdateProductDiscountResult> EditProductDiscountInAdmin(UpdateProductDiscountViewModel updateProductDiscount, int productDiscountId);
         Task<bool> DeleteProductDiscountInAdmin(int productDiscountId);
 
         #endregion

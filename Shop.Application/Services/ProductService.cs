@@ -1,4 +1,5 @@
-﻿using Shop.Application.Extensions;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Shop.Application.Extensions;
 using Shop.Application.Interfaces;
 using Shop.Application.Utils;
 using Shop.Domain.Interfaces;
@@ -44,6 +45,7 @@ namespace Shop.Application.Services
                 Title = productViewModel.Title,
                 Description = productViewModel.Description,
                 Price = productViewModel.Price,
+                ProductCategoryId = productViewModel.CategoryId
             };
 
             #region insert image
@@ -85,6 +87,7 @@ namespace Shop.Application.Services
                 ImageName = product.ImageName,
                 Price = product.Price,
                 Title = product.Title,
+                CategoryId = product.ProductCategoryId
             };
         }
 
@@ -96,6 +99,7 @@ namespace Shop.Application.Services
             product.Title = productViewModel.Title;
             product.Description = productViewModel.Description;
             product.Price = productViewModel.Price;
+            product.ProductCategoryId = productViewModel.CategoryId;
 
             #region insert image
 
@@ -135,6 +139,11 @@ namespace Shop.Application.Services
         public async Task<string> GetProductTitleByProductId(int productId)
         {
             return await _productRepository.GetProductTitleByProductId(productId);
+        }
+
+        public async Task<List<Product>> FilterProductByTitleForCreateProductDiscountFromAdmin(string title)
+        {
+            return await _productRepository.FilterProductByTitle(title);
         }
 
         #endregion
@@ -189,6 +198,24 @@ namespace Shop.Application.Services
             return await _productCategoryRepository.GetProductCategoryById(productCategoryId);
         }
 
+        public async Task<List<SelectListItem>> GetAllProductCategories()
+        {
+            var categories = await _productCategoryRepository.GetAllProductCategory();
+
+            var selectListItemCategories = new List<SelectListItem>();
+            foreach (var category in categories)
+            {
+                selectListItemCategories.Add(new SelectListItem
+                {
+                    Text = category.Title,
+                    Value = category.Id.ToString(),
+                    
+                });
+            }
+
+            return selectListItemCategories;
+        }
+
         #endregion
 
         #region product discount
@@ -208,7 +235,8 @@ namespace Shop.Application.Services
                 DiscountCode = createProductDiscount.DiscountCode,
                 Percentage = createProductDiscount.Percentage,
                 StartTime = createProductDiscount.StartTime.ToMiladi(),
-                EndTime = createProductDiscount.EndTime.ToMiladi()
+                EndTime = createProductDiscount.EndTime.ToMiladi(),
+                ProductId = createProductDiscount.ProductId,
             };
             await _productDiscountRepository.AddProductDiscount(newProductDiscount);
             return CreateProductDiscountResult.Success;
@@ -224,19 +252,28 @@ namespace Shop.Application.Services
                 EndTime = productDiscount.EndTime.ToShamsiDateTime(),
                 DiscountCode = productDiscount.DiscountCode,
                 Percentage = productDiscount.Percentage,
+                ProductId = productDiscount.ProductId,
+                ProductTitle = await GetProductTitleByProductId(productDiscount.ProductId),
             };
         }
 
-        public async Task<bool> EditProductDiscountInAdmin(UpdateProductDiscountViewModel updateProductDiscount, int productDiscountId)
+        public async Task<UpdateProductDiscountResult> EditProductDiscountInAdmin(UpdateProductDiscountViewModel updateProductDiscount, int productDiscountId)
         {
             var productDiscount = await _productDiscountRepository.GetProductDiscountById(productDiscountId);
-            if (productDiscount == null || productDiscount.IsDelete) return false;
+            if (productDiscount == null || productDiscount.IsDelete) return UpdateProductDiscountResult.NotFoundDiscount;
+
+            var productDiscountWithDiscountCode = await _productDiscountRepository.GetProductDiscountByDiscountCode(updateProductDiscount.DiscountCode);
+            if (productDiscountWithDiscountCode != null && productDiscountWithDiscountCode.Id != productDiscountId)
+                return UpdateProductDiscountResult.ExistDiscount;
+
+            productDiscount.ProductId = updateProductDiscount.ProductId;
+            productDiscount.DiscountCode = updateProductDiscount.DiscountCode;
             productDiscount.Percentage = updateProductDiscount.Percentage;
             productDiscount.StartTime = updateProductDiscount.StartTime.ToMiladi();
             productDiscount.EndTime = updateProductDiscount.EndTime.ToMiladi();
 
             await _productDiscountRepository.UpdateProductDiscount(productDiscount);
-            return true;
+            return UpdateProductDiscountResult.Success;
         }
 
         public async Task<bool> DeleteProductDiscountInAdmin(int productDiscountId)
@@ -306,7 +343,7 @@ namespace Shop.Application.Services
 
             return new UpdateProductGalleryViewModel
             {
-                ProductId= productGallery.ProductId,
+                ProductId = productGallery.ProductId,
                 ProductTitle = await _productRepository.GetProductTitleByProductId(productGallery.Id),
                 ProductImageName = productGallery.ImageName,
             };
