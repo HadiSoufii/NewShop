@@ -46,7 +46,7 @@
 
         <li>
             <a href="#" class="menu-dropdown">
-                <i class="menu-icon fa fa-user"></i>
+                <i class="menu-icon fa fa-envelope-o"></i>
                 <span class="menu-text">مدیریت تیکت ها</span>
 
                 <i class="menu-expand"></i>
@@ -65,6 +65,88 @@
                     <a asp-area="Admin" asp-controller="Ticket" asp-action="TicketCreate">
                         <span class="menu-text">
                             ایجاد تیکت
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-align-right"></i>
+                <span class="menu-text">مدیریت محصولات</span>
+
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-area="Admin" asp-controller="Product" asp-action="Index">
+                        <span class="menu-text">
+                            محصول ها
+                        </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a asp-area="Admin" asp-controller="Product" asp-action="CreateProduct">
+                        <span class="menu-text">
+                            ایجاد محصول
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-align-right"></i>
+                <span class="menu-text">مدیریت دسته بندی ها</span>
+
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-area="Admin" asp-controller="ProductCategory" asp-action="Index">
+                        <span class="menu-text">
+                            لیست دسته بندی ها
+                        </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a asp-area="Admin" asp-controller="ProductCategory" asp-action="CreateProductCategory">
+                        <span class="menu-text">
+                            ایجاد دسته بندی
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-align-right"></i>
+                <span class="menu-text">مدیریت کد تخفیف ها</span>
+
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-area="Admin" asp-controller="ProductDiscount" asp-action="Index">
+                        <span class="menu-text">
+                            لیست کد تخفیف
+                        </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a asp-area="Admin" asp-controller="ProductDiscount" asp-action="CreateProductDiscount">
+                        <span class="menu-text">
+                            ایجاد کد تخفیف
                         </span>
                     </a>
                 </li>

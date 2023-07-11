@@ -24,8 +24,7 @@ namespace Shop.MVC.Areas.UserPanel.Controllers
         [HttpGet("tickets")]
         public async Task<IActionResult> Index(FilterTicketViewModel filter)
         {
-            //filter.UserId = User.GetUserId();
-            filter.UserId = 6;
+            filter.UserId = User.GetUserId();
             filter.FilterTicketState = FilterTicketState.NotDeleted;
             filter.OrderBy = FilterTicketOrder.CreateDate_DES;
 
@@ -47,8 +46,7 @@ namespace Shop.MVC.Areas.UserPanel.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var userId = User.GetUserId();
-                var userId = 6;
+                var userId = User.GetUserId();
                 var result = await _ticketService.AddUserTicket(ticket,userId);
 
                 switch (result)
@@ -72,8 +70,7 @@ namespace Shop.MVC.Areas.UserPanel.Controllers
         [HttpGet("tickets/{ticketId}")]
         public async Task<IActionResult> TicketDetail(int ticketId)
         {
-            //var userId = User.GetUserId();
-            var userId = 6;
+            var userId = User.GetUserId();
             var ticket = await _ticketService.GetTicketForShow(ticketId, userId);
             if (ticket == null) return NotFound();
             return View(ticket);
@@ -91,8 +88,7 @@ namespace Shop.MVC.Areas.UserPanel.Controllers
 
             if (ModelState.IsValid)
             {
-                //var userId = User.GetUserId();
-                var userId = 6;
+                var userId = User.GetUserId();
                 var res = await _ticketService.AnswerTicket(answer, userId);
                 switch (res)
                 {

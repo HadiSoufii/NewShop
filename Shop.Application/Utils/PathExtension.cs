@@ -27,11 +27,23 @@
 
         #endregion
 
-        #region upload image tickets
+        #region upload ckeditor image tickets
 
         public static string UploadImageTicket = "/Template/Images/Tickets/Origin/";
         public static string UploadImageTicketServer =
             Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Template/Images/Tickets/Origin/");
+
+        #endregion
+
+        #region product
+
+        public static string ProductImageOrigin = "/Template/Images/Product/Origin/";
+        public static string ProductImageOriginServer =
+            Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Template/Images/Product/Origin/");
+
+        public static string ProductImageThumb = "/Template/Images/Product/Thumb/";
+        public static string ProductImageThumbServer =
+            Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Template/Images/Product/Thumb/");
 
         #endregion
     }

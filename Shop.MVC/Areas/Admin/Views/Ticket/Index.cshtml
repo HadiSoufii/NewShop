@@ -17,10 +17,6 @@
     <!-- /Page Breadcrumb -->
 }
 
-@section FooterSection {
-    <partial name="_JqueryValidators" />
-}
-
 
 <div class="col-xs-4">
     <div class="well with-header">
@@ -96,7 +92,7 @@
         <div class="header bordered-sky">
             @ViewData["Title"]
         </div>
-        @if (true)
+        @if (Model.Tickets != null && Model.Tickets.Any())
         {
             <table class="table table-bordered table-hover">
                 <thead>

@@ -33,8 +33,7 @@ namespace Shop.MVC.Areas.UserPanel.Controllers
         [HttpGet("edit-user")]
         public async Task<IActionResult> EditUser()
         {
-            //int id = User.GetUserId();
-            int id = 6;
+            int id = User.GetUserId();
             EditUserPanelViewModel model = await _accountService.GetUserByIdForEditUserPanelAsync(id);
             return View(model);
         }

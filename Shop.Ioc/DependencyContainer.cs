@@ -17,6 +17,10 @@ namespace Shop.Ioc
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<ITicketRepository, TicketRepository>();
             services.AddScoped<ITicketMessageRepository, TicketMessageRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
+            services.AddScoped<IProductDiscountRepository, ProductDiscountRepository>();
+            services.AddScoped<IProductGalleryRepository, ProductGalleryRepository>();
 
             #endregion
 
@@ -24,6 +28,7 @@ namespace Shop.Ioc
 
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ITicketService, TicketService>();
+            services.AddScoped<IProductService, ProductService>();
 
             #endregion
 

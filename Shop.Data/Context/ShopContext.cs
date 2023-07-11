@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shop.Domain.Entities.Ticket;
 using Shop.Domain.Models.Account;
+using Shop.Domain.Models.Product;
 
 namespace Shop.Data.Context
 {
@@ -24,6 +25,15 @@ namespace Shop.Data.Context
 
         #endregion
 
+        #region product
+
+        public DbSet<Product> Products { get; set; } 
+        public DbSet<ProductCategory> ProductCategories { get; set; } 
+        public DbSet<ProductDiscount> ProductDiscounts { get; set; } 
+        public DbSet<ProductGallery> ProductGalleries { get; set; } 
+
+        #endregion
+
         #region on model creating
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -32,18 +42,6 @@ namespace Shop.Data.Context
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
-
-            //modelBuilder.Entity<TicketMessage>()
-            //    .HasOne(t => t.Sender)
-            //    .WithMany(s => s.TicketMessages)
-            //    .HasForeignKey(s=> s.SenderId)
-            //    .OnDelete(DeleteBehavior.Cascade);
-
-            //modelBuilder.Entity<TicketMessage>()
-            //    .HasOne(t => t.Ticket)
-            //    .WithMany(s => s.TicketMessages)
-            //    .HasForeignKey(s => s.TicketId)
-            //    .OnDelete(DeleteBehavior.Cascade);
 
             base.OnModelCreating(modelBuilder);
         }

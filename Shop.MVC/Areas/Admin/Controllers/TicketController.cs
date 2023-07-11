@@ -57,8 +57,7 @@ namespace Shop.MVC.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var userId = User.GetUserId();
-                var userId = 9;
+                var userId = User.GetUserId();
                 var result = await _ticketService.AddTicketFromAdminForUser(ticket, userId);
 
                 switch (result)
@@ -98,8 +97,7 @@ namespace Shop.MVC.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                //var userId = User.GetUserId();
-                var userId = 9;
+                var userId = User.GetUserId();
                 var res = await _ticketService.AnswerTicketFromAdmin(answer, userId);
                 switch (res)
                 {

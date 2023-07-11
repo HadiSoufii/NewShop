@@ -25,6 +25,14 @@ namespace Shop.Domain.ViewModels.Account
 
         public FilterUsersInAdminViewModel SetPaging(BasePaging paging)
         {
+            this.PageId = paging.PageId;
+            this.AllEntitiesCount = paging.AllEntitiesCount;
+            this.StarPage = paging.StarPage;
+            this.EndPage = paging.EndPage;
+            this.HowManyShowPageAfterAndBefore = paging.HowManyShowPageAfterAndBefore;
+            this.TakeEntity = paging.TakeEntity;
+            this.SkipEntity = paging.SkipEntity;
+            this.PageCount = paging.PageCount;
             return this;
         }
 
