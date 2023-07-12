@@ -28,5 +28,7 @@ namespace Shop.Domain.ViewModels.Account
         public bool IsAdmin { get; set; }
         public bool IsEmailActive { get; set; }
         public bool IsBan { get; set; }
+
+        public List<int>? SelectedRoles { get; set; }
     }
 }

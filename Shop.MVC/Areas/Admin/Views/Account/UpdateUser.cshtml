@@ -1,6 +1,7 @@
 ﻿@model UpdateUserByAdminViewModel
 @{
     ViewData["Title"] = "UpdateUser";
+    var Roles = ViewData["Roles"] as List<Role>;
 }
 
 @section Breadcrumb {
@@ -99,6 +100,21 @@
                     <input type="checkbox" asp-for="IsBan" class="colored-success">
                     <span class="text">بن</span>
                 </label>
+            </div>
+
+            <div class="form-group" style="background-color:beige; padding:15px;">
+                <label>انتخاب نقش کاربر</label>
+                @foreach (var item in Roles)
+                {
+                    <div class="checkbox">
+                        <label>
+                            <input class="colored-success" @(Model.SelectedRoles.Any(r => r == item.Id) ? "checked" : "") type="checkbox" name="SelectedRoles" value="@item.Id">
+                            <span class="text">
+                                @item.RoleTitle
+                            </span>
+                        </label>
+                    </div>
+                }
             </div>
             
             <button type="submit" class="btn btn-success btn-block">ویرایش</button>

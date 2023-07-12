@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shop.Domain.Entities.Ticket;
 using Shop.Domain.Models.Account;
+using Shop.Domain.Models.Permissions;
 using Shop.Domain.Models.Product;
 
 namespace Shop.Data.Context
@@ -30,7 +31,16 @@ namespace Shop.Data.Context
         public DbSet<Product> Products { get; set; } 
         public DbSet<ProductCategory> ProductCategories { get; set; } 
         public DbSet<ProductDiscount> ProductDiscounts { get; set; } 
-        public DbSet<ProductGallery> ProductGalleries { get; set; } 
+        public DbSet<ProductGallery> ProductGalleries { get; set; }
+
+        #endregion
+
+        #region reole permission
+
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<RolePermission> RolePermissions { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
 
         #endregion
 

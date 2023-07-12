@@ -10,10 +10,12 @@ namespace Shop.MVC.Areas.Admin.Controllers
         #region constructor
 
         private readonly IAccountService _accountService;
+        private readonly IRolePermissionService _rolePermissionService;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountService accountService, IRolePermissionService rolePermissionService)
         {
             _accountService = accountService;
+            _rolePermissionService = rolePermissionService;
         }
 
         #endregion
@@ -33,8 +35,9 @@ namespace Shop.MVC.Areas.Admin.Controllers
         #region create user 
 
         [HttpGet("create-user")]
-        public IActionResult CreateUser()
+        public async Task<IActionResult> CreateUser()
         {
+            ViewData["Roles"] = await _rolePermissionService.GetRoles();
             return View();
         }
 
@@ -55,6 +58,8 @@ namespace Shop.MVC.Areas.Admin.Controllers
                         break;
                 }
             }
+
+            ViewData["Roles"] = await _rolePermissionService.GetRoles();
             return View(createUser);
         }
 
@@ -67,6 +72,7 @@ namespace Shop.MVC.Areas.Admin.Controllers
         {
             UpdateUserByAdminViewModel? updateUser = await _accountService.GetUserForEditByAdminAsync(id);
             if (updateUser == null) return NotFound();
+            ViewData["Roles"] = await _rolePermissionService.GetRoles();
             return View(updateUser);
         }
 
@@ -86,6 +92,7 @@ namespace Shop.MVC.Areas.Admin.Controllers
                     TempData[ErrorMessage] = "خطایی در ویرایش کاربر وجود دارد";
                 }
             }
+            ViewData["Roles"] = await _rolePermissionService.GetRoles();
             return View(updateUser);
         }
 

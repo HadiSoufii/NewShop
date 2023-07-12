@@ -12,6 +12,8 @@
     <title>YektaKala | home v1</title>
     <partial name="_HeaderReferences" />
     @RenderSection("Styles",false)
+    <link rel="stylesheet" href="/lib/EasyAutocomplete/easy-autocomplete.min.css" />
+    <link rel="stylesheet" href="/lib/EasyAutocomplete/easy-autocomplete.themes.min.css" />
 </head>
 
 <body>
@@ -32,6 +34,31 @@
     <partial name="_FooterReferences" />
     @RenderSection("Scripts",false)
     <partial name="_SiteMessages" />
+    <script src="/lib/EasyAutocomplete/jquery.easy-autocomplete.min.js"></script>
+    <script>
+
+        var options = {
+            url: function (phrase) {
+                return "/product-autocomplete?title=" + phrase;
+            },
+            getValue: function (element) {
+                return element.title;
+            },
+            list: {
+                match: {
+                    enabled: true
+                },
+                onSelectItemEvent: function () {
+                    var value = $("#TitleSearch").getSelectedItemData().title;
+
+                    $("#Title").val(value).trigger("change");
+                }
+            },
+            theme: "square"
+        };
+
+        $("#TitleSearch").easyAutocomplete(options);
+    </script>
 </body>
 
 </html>

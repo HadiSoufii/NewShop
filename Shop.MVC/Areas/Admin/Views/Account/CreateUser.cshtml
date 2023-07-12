@@ -1,6 +1,7 @@
 ﻿@model CreateUserByAdminViewModel
 @{
     ViewData["Title"] = "CreateUser";
+    var Roles = ViewData["Roles"] as List<Role>;
 }
 
 @section Breadcrumb {
@@ -90,6 +91,21 @@
                     <input type="checkbox" asp-for="IsAdmin" class="colored-success">
                     <span class="text">دسترسی ادمین</span>
                 </label>
+            </div>
+            <hr />
+            <div class="form-group" style="background-color:beige; padding:15px;">
+                <label>انتخاب نقش کاربر</label>
+                @foreach (var item in Roles)
+                {
+                    <div class="checkbox">
+                        <label>
+                            <input class="colored-success" type="checkbox" name="SelectedRoles" value="@item.Id">
+                            <span class="text">
+                                @item.RoleTitle
+                            </span>
+                        </label>
+                    </div>
+                }
             </div>
             <button type="submit" class="btn btn-success btn-block">ثبت</button>
         </form>

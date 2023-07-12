@@ -29,6 +29,8 @@ namespace Shop.Domain.ViewModels.Account
         public IFormFile? Avatar { get; set; }
 
         public bool IsAdmin { get; set; }
+        public List<int>? SelectedRoles { get; set; }
+
 
     }
 

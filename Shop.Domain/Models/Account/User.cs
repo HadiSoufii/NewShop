@@ -1,5 +1,6 @@
 ﻿using Shop.Domain.Entities.Ticket;
 using Shop.Domain.Models.Common;
+using Shop.Domain.Models.Permissions;
 using System.ComponentModel.DataAnnotations;
 
 namespace Shop.Domain.Models.Account
@@ -53,6 +54,7 @@ namespace Shop.Domain.Models.Account
         
         public IEnumerable<TicketMessage>? TicketMessages { get; set; }
         public IEnumerable<Ticket>? Tickets { get; set; }
+        public IEnumerable<UserRole> UserRoles { get; set; }
 
         #endregion
     }

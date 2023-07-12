@@ -4,7 +4,6 @@ using Shop.Domain.Interfaces;
 using Shop.Domain.Models.Product;
 using Shop.Domain.ViewModels.Paging;
 using Shop.Domain.ViewModels.Product;
-using Shop.Domain.ViewModels.Ticket;
 
 namespace Shop.Data.Repository
 {
@@ -46,17 +45,28 @@ namespace Shop.Data.Repository
 
         public async Task<Product> GetProductById(int id)
         {
-            return await _context.Products.FindAsync(id);
+            return await _context.Products.Include(s=> s.ProductGalleries).Where(s=> s.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<FilterProductViewModel> FilterProduct(FilterProductViewModel filter)
         {
-            var query = _context.Products.AsQueryable();
+            var query = _context.Products.Include(s => s.ProductCategory).AsQueryable();
+
+            var expensiveProduct = await query.OrderByDescending(s => s.Price).FirstOrDefaultAsync();
+            filter.FilterMaxPrice = expensiveProduct.Price;
 
             #region filter
 
             if (!string.IsNullOrEmpty(filter.Title))
                 query = query.Where(s => EF.Functions.Like(s.Title, $"%{filter.Title}%"));
+
+            if (filter.SelectedMaxPrice == 0) filter.SelectedMaxPrice = expensiveProduct.Price;
+
+            query = query.Where(s => s.Price >= filter.SelectedMinPrice);
+            query = query.Where(s => s.Price <= filter.SelectedMaxPrice);
+
+            if (filter.CategoryId != null && filter.CategoryId != 0)
+                query = query.Where(s => s.ProductCategory.Id == filter.CategoryId);
 
             #endregion
 
@@ -73,12 +83,12 @@ namespace Shop.Data.Repository
 
         public async Task<string> GetProductTitleByProductId(int productId)
         {
-            return await _context.Products.Where(s=> s.Id == productId).Select(s=> s.Title).FirstOrDefaultAsync();
+            return await _context.Products.Where(s => s.Id == productId).Select(s => s.Title).FirstOrDefaultAsync();
         }
 
         public async Task<bool> IsExistProductById(int productId)
         {
-            return await _context.Products.AnyAsync(s=> s.Id == productId);
+            return await _context.Products.AnyAsync(s => s.Id == productId);
         }
 
         public async Task<List<Product>> FilterProductByTitle(string title)
@@ -86,6 +96,10 @@ namespace Shop.Data.Repository
             return await _context.Products
                 .Where(u => EF.Functions.Like(u.Title, $"%{title}%")).ToListAsync();
         }
+
+        public async Task<List<Product>> GetProducts(int take)
+        {
+            return await _context.Products.Take(take).OrderByDescending(s => s.CreateDate).ToListAsync();
+        }
     }
 }
-    

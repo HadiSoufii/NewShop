@@ -24,7 +24,7 @@ namespace Shop.MVC.Areas.Admin.Controllers
         [HttpGet("product-list")]
         public async Task<IActionResult> Index(FilterProductViewModel filter)
         {
-            filter = await _productService.FilterProductInAdmin(filter);
+            filter = await _productService.FilterProducts(filter);
             return View(filter);
         }
 

@@ -64,7 +64,7 @@ namespace Shop.MVC.Areas.Admin.Controllers
         [HttpGet("product-autocomplete")]
         public async Task<IActionResult> GetSellerProductsJson(string title)
         {
-            var data = await _productService.FilterProductByTitleForCreateProductDiscountFromAdmin(title);
+            var data = await _productService.FilterProducstByTitle(title);
             return new JsonResult(data);
         }
 

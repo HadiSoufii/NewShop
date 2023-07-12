@@ -11,13 +11,16 @@ namespace Shop.Application.Interfaces
     {
         #region product
 
-        Task<FilterProductViewModel> FilterProductInAdmin(FilterProductViewModel filter);
+        Task<FilterProductViewModel> FilterProducts(FilterProductViewModel filter);
         Task<CreateProductResult> CreateProductInAdmin(CreateProductViewModel productViewModel);
         Task<UpdateProductViewModel?> GetProductByIdForEditInAdmin(int productId);
         Task<UpdateProductResult> EditProductinAdmin(UpdateProductViewModel productViewModel);
         Task<bool> DeleteProductByIdInAdmin(int productId);
         Task<string> GetProductTitleByProductId(int productId);
-        Task<List<Product>> FilterProductByTitleForCreateProductDiscountFromAdmin(string title);
+        Task<List<Product>> FilterProducstByTitle(string title);
+
+        Task<List<ProductCardViewModel>> GetLastProductForShowHome();
+        Task<ProductDetailViewModel?> GetProductForShowDetailProductById(int productId);
 
         #endregion
 
@@ -30,6 +33,8 @@ namespace Shop.Application.Interfaces
         Task<bool> DeleteProductCategoryInAdmin(int productCategoryId);
         Task<ProductCategory> GetProductCategoryById(int productCategoryId);
         Task<List<SelectListItem>> GetAllProductCategories();
+
+        Task<List<ProductCategory>> GetAllCategories();
 
         #endregion
 

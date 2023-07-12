@@ -14,5 +14,6 @@ namespace Shop.Domain.Interfaces
         Task<string> GetProductTitleByProductId(int productId);
         Task<bool> IsExistProductById(int productId);
         Task<List<Product>> FilterProductByTitle(string title);
+        Task<List<Product>> GetProducts(int take);
     }
 }

@@ -15,12 +15,14 @@ namespace Shop.Application.Services
 
         private readonly IAccountRepository _accountRepository;
         private readonly ISendEmailSerivce _sendEmailSerivce;
+        private readonly IRolePermissionService _rolePermissionService;
 
 
-        public AccountService(IAccountRepository accountRepository, ISendEmailSerivce sendEmailSerivce)
+        public AccountService(IAccountRepository accountRepository, ISendEmailSerivce sendEmailSerivce, IRolePermissionService rolePermissionService)
         {
             _accountRepository = accountRepository;
             _sendEmailSerivce = sendEmailSerivce;
+            _rolePermissionService = rolePermissionService;
         }
 
         #endregion
@@ -164,6 +166,9 @@ namespace Shop.Application.Services
 
             await _accountRepository.AddAsync(user);
 
+            // add role to user
+            await _rolePermissionService.AddRolesToUser(createUser.SelectedRoles, user.Id);
+
             return CreateUserByAdminResult.Success;
         }
 
@@ -171,6 +176,7 @@ namespace Shop.Application.Services
         {
             User? user = await _accountRepository.GetUserByIdAsync(id);
             if (user == null) return null;
+            List<int> SelectedUserRoles = await _rolePermissionService.SelectedRoleIDsByUserId(user.Id);
             return new UpdateUserByAdminViewModel
             {
                 ImageName = user.ImageName,
@@ -180,6 +186,7 @@ namespace Shop.Application.Services
                 IsBan = user.IsBan,
                 IsEmailActive = user.IsEmailActive,
                 Mobile = user.Mobile,
+                SelectedRoles = SelectedUserRoles
             };
         }
 
@@ -217,6 +224,9 @@ namespace Shop.Application.Services
             #endregion
 
             await _accountRepository.UpdateAsync(user);
+
+            // update user role
+            await _rolePermissionService.EditRolesUser(updateUser.SelectedRoles,user.Id);
 
             return true;
         }
@@ -259,7 +269,7 @@ namespace Shop.Application.Services
             var user = await _accountRepository.GetUserByEmailActiveCodeAsync(activeCode);
             if (user == null) return false;
             user.Password = reset.Password.EncodePasswordMd5();
-            user.EmailActiveCode= Guid.NewGuid().ToString();
+            user.EmailActiveCode = Guid.NewGuid().ToString();
             await _accountRepository.UpdateAsync(user);
             return true;
         }

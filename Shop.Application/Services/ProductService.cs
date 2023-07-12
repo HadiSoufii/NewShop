@@ -33,7 +33,7 @@ namespace Shop.Application.Services
 
         #region product
 
-        public async Task<FilterProductViewModel> FilterProductInAdmin(FilterProductViewModel filter)
+        public async Task<FilterProductViewModel> FilterProducts(FilterProductViewModel filter)
         {
             return await _productRepository.FilterProduct(filter);
         }
@@ -141,9 +141,27 @@ namespace Shop.Application.Services
             return await _productRepository.GetProductTitleByProductId(productId);
         }
 
-        public async Task<List<Product>> FilterProductByTitleForCreateProductDiscountFromAdmin(string title)
+        public async Task<List<Product>> FilterProducstByTitle(string title)
         {
             return await _productRepository.FilterProductByTitle(title);
+        }
+
+        public async Task<List<ProductCardViewModel>> GetLastProductForShowHome()
+        {
+            var products = await _productRepository.GetProducts(10);
+
+            List<ProductCardViewModel> productCardsViewModel = new List<ProductCardViewModel>();
+            foreach (var product in products)
+            {
+                productCardsViewModel.Add(new ProductCardViewModel
+                {
+                    ProductId = product.Id,
+                    ProductPrice = product.Price,
+                    ImageName = product.ImageName,
+                    ProductTitle = product.Title,
+                });
+            };
+            return productCardsViewModel;
         }
 
         #endregion
@@ -209,11 +227,34 @@ namespace Shop.Application.Services
                 {
                     Text = category.Title,
                     Value = category.Id.ToString(),
-                    
+
                 });
             }
 
             return selectListItemCategories;
+        }
+
+        public async Task<List<ProductCategory>> GetAllCategories()
+        {
+            return await _productCategoryRepository.GetAllProductCategory();
+        }
+
+        public async Task<ProductDetailViewModel?> GetProductForShowDetailProductById(int productId)
+        {
+            var product = await _productRepository.GetProductById(productId);
+            if (product == null || product.IsDelete) return null;
+
+            ProductDetailViewModel productDetail = new ProductDetailViewModel()
+            {
+                Description = product.Description,
+                ImageName = product.ImageName,
+                ProductId = productId,
+                ProductPrice = product.Price,
+                ProductTitle = product.Title,
+                Gallery = product.ProductGalleries.Select(s=> s.ImageName).ToList()
+            };
+
+            return productDetail;
         }
 
         #endregion

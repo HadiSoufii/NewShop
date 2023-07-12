@@ -153,6 +153,33 @@
             </ul>
         </li>
 
+        <li>
+            <a href="#" class="menu-dropdown">
+                <i class="menu-icon fa fa-align-right"></i>
+                <span class="menu-text">مدیریت نقش ها و سطج دسترسی</span>
+
+                <i class="menu-expand"></i>
+            </a>
+
+            <ul class="submenu">
+                <li>
+                    <a asp-area="Admin" asp-controller="RolePermission" asp-action="Index">
+                        <span class="menu-text">
+                            لیست نقش ها
+                        </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a asp-area="Admin" asp-controller="RolePermission" asp-action="CreateRolePermission">
+                        <span class="menu-text">
+                            ایجاد نقش جدید
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
     </ul>
     <!-- /Sidebar Menu -->
 </div>

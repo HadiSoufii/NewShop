@@ -9,6 +9,14 @@ namespace Shop.Domain.ViewModels.Product
         #region properties
 
         public string? Title { get; set; }
+        public int? CategoryId { get; set; }
+
+        public int FilterMinPrice { get; set; }
+        public int FilterMaxPrice { get; set; }
+        public int SelectedMinPrice { get; set; }
+        public int SelectedMaxPrice { get; set; }
+        public int PriceStep { get; set; } = 50000;
+
         public List<Models.Product.Product> Products { get; set; }
 
         #endregion
