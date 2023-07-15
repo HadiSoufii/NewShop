@@ -12,5 +12,7 @@ namespace Shop.Domain.Interfaces
         Task<List<ProductDiscount>> GetAllProductDiscount();
         Task<FilterProductDiscountViewModel> FilterProductDiscount(FilterProductDiscountViewModel filter);
         Task<ProductDiscount?> GetProductDiscountByDiscountCode(string discountCode);
+        Task<ProductDiscount?> GetProductDiscountByDiscountCodeAndProductId(string discountCode, int productId);
+        Task<int?> GetPercentageDiscountByDiscountCodeAndProductId(string discountCode, int productId);
     }
 }

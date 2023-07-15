@@ -75,5 +75,17 @@ namespace Shop.Data.Repository
         {
             return await _context.ProductDiscounts.FirstOrDefaultAsync(s=> s.DiscountCode == discountCode);
         }
+
+        public async Task<ProductDiscount?> GetProductDiscountByDiscountCodeAndProductId(string discountCode, int productId)
+        {
+            return await _context.ProductDiscounts
+                .FirstOrDefaultAsync(s=> s.DiscountCode == discountCode && s.ProductId == productId && !s.IsDelete);
+        }
+
+        public async Task<int?> GetPercentageDiscountByDiscountCodeAndProductId(string discountCode, int productId)
+        {
+            return await _context.ProductDiscounts.Where(s=> s.DiscountCode == discountCode && s.ProductId == productId && !s.IsDelete)
+                .Select(s=> s.Percentage).FirstOrDefaultAsync();
+        }
     }
 }

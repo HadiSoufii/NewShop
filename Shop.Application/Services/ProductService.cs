@@ -326,6 +326,23 @@ namespace Shop.Application.Services
             return true;
         }
 
+        public async Task<int?> GetProductDiscountAmount(string discountCode, int productId, int price)
+        {
+            var productDiscount = await _productDiscountRepository.GetProductDiscountByDiscountCodeAndProductId(discountCode, productId);
+
+            if (productDiscount != null)
+            {
+                return (int)Math.Ceiling(price * productDiscount.Percentage / (decimal)100);
+            }
+
+            return null;
+        }
+
+        public async Task<int?> GetPercentageDiscount(string discountCode, int productId)
+        {
+            return await _productDiscountRepository.GetPercentageDiscountByDiscountCodeAndProductId(discountCode,productId);
+        }
+
         #endregion
 
         #region product gallery

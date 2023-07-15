@@ -45,6 +45,8 @@ namespace Shop.Application.Interfaces
         Task<UpdateProductDiscountViewModel?> GetProductDiscountForEditInAdmin(int productDiscountId);
         Task<UpdateProductDiscountResult> EditProductDiscountInAdmin(UpdateProductDiscountViewModel updateProductDiscount, int productDiscountId);
         Task<bool> DeleteProductDiscountInAdmin(int productDiscountId);
+        Task<int?> GetProductDiscountAmount(string discountCode, int productId, int price);
+        Task<int?> GetPercentageDiscount(string discountCode, int productId);
 
         #endregion
 

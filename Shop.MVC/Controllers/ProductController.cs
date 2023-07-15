@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Interfaces;
+using Shop.Domain.ViewModels.Orders;
 using Shop.Domain.ViewModels.Product;
+using Shop.MVC.PresentationExtensions;
 
 namespace Shop.MVC.Controllers
 {
@@ -10,10 +12,12 @@ namespace Shop.MVC.Controllers
         #region constructor
 
         private readonly IProductService _productService;
+        private readonly IOrderService _orderService;
 
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, IOrderService orderService)
         {
             _productService = productService;
+            _orderService = orderService;
         }
 
         #endregion
@@ -53,6 +57,23 @@ namespace Shop.MVC.Controllers
         {
             var data = await _productService.FilterProducstByTitle(title);
             return new JsonResult(data);
+        }
+
+        #endregion
+
+        #region add product to order
+        [HttpGet("product/add-product-to-order/{productId}")]
+        public async Task<IActionResult> AddProductToOrder(int productId)
+        {
+            AddProductToOrderViewModel addProduct = new AddProductToOrderViewModel();
+            addProduct.ProductId = productId;
+            addProduct.Count = 1;
+
+            await _orderService.AddProductToOpenOrder(User.GetUserId(),addProduct);
+
+            TempData[SuccessMessage] = "محصول با موفقیت به سبد خرید اضافه شد";
+
+            return RedirectToAction("ProductDetail", new { productId });
         }
 
         #endregion

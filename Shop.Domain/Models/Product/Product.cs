@@ -1,4 +1,5 @@
 ﻿using Shop.Domain.Models.Common;
+using Shop.Domain.Models.Order;
 using System.ComponentModel.DataAnnotations;
 
 namespace Shop.Domain.Models.Product
@@ -36,6 +37,7 @@ namespace Shop.Domain.Models.Product
 
         public IEnumerable<ProductGallery> ProductGalleries { get; set; }
         public IEnumerable<ProductDiscount> ProductDiscounts { get; set; }
+        public IEnumerable<OrderDetail> OrderDetails { get; set; }
 
         #endregion
     }

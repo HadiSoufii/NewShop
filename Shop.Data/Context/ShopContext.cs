@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shop.Domain.Entities.Ticket;
 using Shop.Domain.Models.Account;
+using Shop.Domain.Models.Order;
 using Shop.Domain.Models.Permissions;
 using Shop.Domain.Models.Product;
+using Shop.Domain.Models.Wallet;
 
 namespace Shop.Data.Context
 {
@@ -41,6 +43,19 @@ namespace Shop.Data.Context
         public DbSet<Role> Roles { get; set; }
         public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+
+        #endregion
+
+        #region order
+
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+
+        #endregion
+
+        #region wallet
+
+        public DbSet<Wallet> Wallets { get; set; }
 
         #endregion
 
