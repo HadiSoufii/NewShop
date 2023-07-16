@@ -45,12 +45,12 @@ namespace Shop.Data.Repository
 
         public async Task<Product> GetProductById(int id)
         {
-            return await _context.Products.Include(s=> s.ProductGalleries).Where(s=> s.Id == id).FirstOrDefaultAsync();
+            return await _context.Products.Include(s=> s.ProductGalleries).Include(s=> s.ProductColors).Where(s=> s.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<FilterProductViewModel> FilterProduct(FilterProductViewModel filter)
         {
-            var query = _context.Products.Include(s => s.ProductCategory).AsQueryable();
+            var query = _context.Products.Include(s => s.ProductCategory).Include(s=> s.ProductColors).AsQueryable();
 
             var expensiveProduct = await query.OrderByDescending(s => s.Price).FirstOrDefaultAsync();
             filter.FilterMaxPrice = expensiveProduct.Price;
@@ -99,7 +99,7 @@ namespace Shop.Data.Repository
 
         public async Task<List<Product>> GetProducts(int take)
         {
-            return await _context.Products.Take(take).OrderByDescending(s => s.CreateDate).ToListAsync();
+            return await _context.Products.Include(p=> p.ProductColors).Take(take).OrderByDescending(s => s.CreateDate).ToListAsync();
         }
     }
 }

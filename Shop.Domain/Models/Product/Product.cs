@@ -18,6 +18,10 @@ namespace Shop.Domain.Models.Product
         [MaxLength(300, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
         public string ImageName { get; set; } = string.Empty;
 
+        [Display(Name = "ویژگی ها")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        public string Feature { get; set; } = string.Empty;
+
         [Display(Name = "قیمت محصول")]
         public int Price { get; set; }
 
@@ -38,6 +42,7 @@ namespace Shop.Domain.Models.Product
         public IEnumerable<ProductGallery> ProductGalleries { get; set; }
         public IEnumerable<ProductDiscount> ProductDiscounts { get; set; }
         public IEnumerable<OrderDetail> OrderDetails { get; set; }
+        public IEnumerable<ProductColor> ProductColors { get; set; }
 
         #endregion
     }

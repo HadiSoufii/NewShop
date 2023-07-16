@@ -2,6 +2,7 @@
 using Shop.Domain.Models.Product;
 using Shop.Domain.ViewModels.Product;
 using Shop.Domain.ViewModels.ProductCategory;
+using Shop.Domain.ViewModels.ProductColor;
 using Shop.Domain.ViewModels.ProductDiscount;
 using Shop.Domain.ViewModels.ProductGallery;
 
@@ -57,6 +58,17 @@ namespace Shop.Application.Interfaces
         Task<UpdateProductGalleryViewModel?> GetProductGalleryByIdForEdit(int productGalleryId);
         Task<UpdateProductGalleryResult> EditProductGallery(int productGalleryId, UpdateProductGalleryViewModel updateProductGallery);
         Task<bool> DeleteProductGalleryById(int productGalleryId);
+
+        #endregion
+
+        #region product color
+
+        Task<ProductColorViewModel> GetProductColorsByProductId(int productId);
+        Task<CreateProductColorViewModel?> GetProductForAddProductColorToProduct(int productId);
+        Task<CreateProductColorResult> CreateProductColor(CreateProductColorViewModel createProductColor);
+        Task<UpdateProductColorViewModel?> GetProductColorForEdit(int productColorId);
+        Task<UpdateProductColorResult> UpdateProductColor(UpdateProductColorViewModel updateProductColor, int productColorId);
+        Task<bool> DeleteProductColor(int productColorId, int productId);
 
         #endregion
     }

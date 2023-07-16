@@ -20,6 +20,10 @@ namespace Shop.Domain.ViewModels.Product
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string Description { get; set; } = string.Empty;
 
+        [Display(Name = "ویژگی های محصول")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        public string Feature { get; set; } = string.Empty;
+
         [Display(Name = "نام تصویر محصول")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public string ImageName { get; set; } = string.Empty;

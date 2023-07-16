@@ -124,5 +124,27 @@ namespace Shop.MVC.Areas.UserPanel.Controllers
         }
 
         #endregion
+
+        #region purchased products
+
+        [HttpGet("order/purchased-products")]
+        public async Task<IActionResult> PurchasedProducts()
+        {
+            var orders = await _orderService.GetUserShoppingCartsByUserId(User.GetUserId());
+            return View(orders);
+        }
+
+        #endregion
+
+        #region detail purchased products
+
+        [HttpGet("order/detail-purchased-products/{orderId}")]
+        public async Task<IActionResult> DetailPurchasedProducts(int orderId)
+        {
+            var orderDetails = await _orderService.GetDetailUserShoppingCartsByUserIdAndOrderId(User.GetUserId(),orderId);
+            return View(orderDetails);
+        }
+
+        #endregion
     }
 }

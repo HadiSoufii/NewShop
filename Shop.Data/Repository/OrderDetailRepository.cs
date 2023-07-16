@@ -59,5 +59,10 @@ namespace Shop.Data.Repository
             return await  _context.OrderDetails
                 .Include(o => o.Order).Include(o=> o.Product).Where(o => o.CreateDate >= date && o.Order.IsPaid && !o.IsDelete).ToListAsync();
         }
+
+        public async Task<List<OrderDetail>> GetDetailUserShoppingCartsByUserIdAndOrderId(int userId, int orderId)
+        {
+            return await _context.OrderDetails.Include(o => o.Order).Include(o=> o.Product).Where(o => o.Order.UserId == userId && o.OrderId == orderId && !o.IsDelete).ToListAsync();
+        }
     }
 }

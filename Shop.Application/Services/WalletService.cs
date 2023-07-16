@@ -85,5 +85,15 @@ namespace Shop.Application.Services
         {
             return await _walletRepository.GetAmountWalletByWalletId(walletId, userId);
         }
+
+        public async Task<int> SumWalletDepositsByUserId(int userId)
+        {
+            return await _walletRepository.SumWalletDepositsByUserId(userId);
+        }
+
+        public async Task<int> SumWalletWithdrawalsByUserId(int userId)
+        {
+            return await _walletRepository.SumWalletWithdrawalsByUserId(userId);
+        }
     }
 }

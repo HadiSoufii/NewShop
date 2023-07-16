@@ -21,6 +21,7 @@ namespace Shop.Ioc
             services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
             services.AddScoped<IProductDiscountRepository, ProductDiscountRepository>();
             services.AddScoped<IProductGalleryRepository, ProductGalleryRepository>();
+            services.AddScoped<IProductColorRepository, ProductColorRepository>();
             services.AddScoped<IPermissionRepository, PermissionRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();

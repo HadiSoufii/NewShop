@@ -78,8 +78,6 @@ namespace Shop.Application.Services
                 FullName = user?.FullName ?? "",
                 Mobile = user?.Mobile,
                 ImageName = user?.ImageName,
-                WalletBalance = 0,
-                Score = 0
             };
         }
 

@@ -10,5 +10,7 @@ namespace Shop.Domain.Interfaces
         Task UpdateWaallet(Wallet wallet);
         Task SaveChange();
         Task<int?> GetAmountWalletByWalletId(int walletId, int userId);
+        Task<int> SumWalletDepositsByUserId(int userId);
+        Task<int> SumWalletWithdrawalsByUserId(int userId);
     }
 }

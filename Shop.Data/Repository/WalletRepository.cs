@@ -52,5 +52,17 @@ namespace Shop.Data.Repository
             _context.Update(wallet);
             await SaveChange();
         }
+
+        public async Task<int> SumWalletDepositsByUserId(int userId)
+        {
+            var sumWalletDeposits = await _context.Wallets.Where(w=> w.UserId == userId && w.TransactionType == TransactionType.Deposit && w.IsPaid).Select(w=> w.Price).ToListAsync();
+            return sumWalletDeposits.Sum(); 
+        }
+
+        public async Task<int> SumWalletWithdrawalsByUserId(int userId)
+        {
+            var sumWalletWithdrawals = await _context.Wallets.Where(w => w.UserId == userId && w.TransactionType == TransactionType.Withdrawal && w.IsPaid).Select(w => w.Price).ToListAsync();
+            return sumWalletWithdrawals.Sum();
+        }
     }
 }

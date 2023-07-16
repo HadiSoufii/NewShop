@@ -10,10 +10,12 @@ namespace Shop.MVC.ViewComponents
         #region constructor
 
         private readonly IAccountService _accountService;
+        private readonly IWalletService _walletService;
 
-        public CardProfileViewComponent(IAccountService accountService)
+        public CardProfileViewComponent(IAccountService accountService, IWalletService walletService)
         {
             _accountService = accountService;
+            _walletService = walletService;
         }
 
         #endregion
@@ -25,6 +27,10 @@ namespace Shop.MVC.ViewComponents
             {
                 var userId = User.GetUserId();
                 userInformation =await _accountService.GetUserByIdForUserPanelAsync(userId);
+
+                var sumDeposits = await _walletService.SumWalletDepositsByUserId(User.GetUserId());
+                var sumWithdrawals = await _walletService.SumWalletWithdrawalsByUserId(User.GetUserId());
+                userInformation.WalletBalance = sumDeposits - sumWithdrawals;
             }
             return View("CardProfile",userInformation);
         }

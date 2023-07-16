@@ -100,6 +100,11 @@ namespace Shop.Application.Services
             await _orderRepository.UpdateOrder(openOrder);
         }
 
+        public async Task<List<Order>> GetUserShoppingCartsByUserId(int userId)
+        {
+            return await _orderRepository.GetUserShoppingCartsByUserId(userId);
+        }
+
         #endregion
 
         #region order detail
@@ -259,6 +264,11 @@ namespace Shop.Application.Services
             });
 
             return product;
+        }
+
+        public async Task<List<OrderDetail>> GetDetailUserShoppingCartsByUserIdAndOrderId(int userId, int orderId)
+        {
+            return await _orderDetailRepository.GetDetailUserShoppingCartsByUserIdAndOrderId(userId, orderId);
         }
 
         #endregion

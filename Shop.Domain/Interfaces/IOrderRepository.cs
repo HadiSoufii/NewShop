@@ -11,5 +11,6 @@ namespace Shop.Domain.Interfaces
         Task SaveChange();
         Task<bool> IsExistUserOpenOrderByUserId(int userId);
         Task<Order> GetUserOpenOrderByUserId(int userId);
+        Task<List<Order>> GetUserShoppingCartsByUserId(int userId);
     }
 }

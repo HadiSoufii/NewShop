@@ -12,6 +12,7 @@ namespace Shop.Application.Interfaces
         Task<Order> GetUserLatestOpenOrder(int userId);
         Task<int> GetTotalOrderPriceForPayment(int userId);
         Task PayOrderProduct(int userId, int refId);
+        Task<List<Order>> GetUserShoppingCartsByUserId(int userId);
 
         #endregion
 
@@ -25,6 +26,7 @@ namespace Shop.Application.Interfaces
         Task<int> GetNumberSalesInCurrentMonthShamsi();
         Task<List<ChartBestSellerProductViewModel>> GetProductBestSellerLastTenDays();
         Task<List<ChartBestSellerProductViewModel>> GetProductBestSellerCurrentMonthShamsi();
+        Task<List<OrderDetail>> GetDetailUserShoppingCartsByUserIdAndOrderId(int userId, int orderId);
 
         #endregion
     }

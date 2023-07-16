@@ -31,6 +31,7 @@ namespace Shop.MVC.Areas.Admin.Controllers
         #endregion
 
         #region create product
+
         [HttpGet("product-create")]
         public async Task<IActionResult> CreateProduct()
         {

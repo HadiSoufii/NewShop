@@ -12,5 +12,6 @@ namespace Shop.Domain.Interfaces
         Task SaveChange();
         Task<int> GetNumberSalesByDateTime(DateTime date);
         Task<List<OrderDetail>> GetOrderDetailsByDateTime(DateTime date);
+        Task<List<OrderDetail>> GetDetailUserShoppingCartsByUserIdAndOrderId(int userId, int orderId);
     }
 }

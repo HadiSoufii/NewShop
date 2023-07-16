@@ -92,6 +92,15 @@
             </div>
             <hr />
 
+            <div class="form-element-row mb-3">
+                <label>
+                    ویژگی های محصول
+                </label>
+                <textarea class="form-control" asp-for="Feature" ckeditor="2s" style="margin-bottom:0;" rows="10"></textarea>
+                <span class="text-danger" asp-validation-for="Feature" style="margin-bottom:10px; display:block;"></span>
+            </div>
+            <hr />
+
             <button type="submit" class="btn btn-success btn-block">ثبت محصول</button>
         </form>
     </div>

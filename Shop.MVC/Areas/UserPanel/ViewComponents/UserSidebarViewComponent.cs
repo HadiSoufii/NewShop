@@ -10,10 +10,12 @@ namespace Shop.MVC.Areas.UserPanel.ViewComponents
         #region constructor
 
         private readonly IAccountService _accountService;
+        private readonly IWalletService _walletService;
 
-        public UserSidebarViewComponent(IAccountService accountService)
+        public UserSidebarViewComponent(IAccountService accountService, IWalletService walletService)
         {
             _accountService = accountService;
+            _walletService = walletService;
         }
 
         #endregion
@@ -22,6 +24,11 @@ namespace Shop.MVC.Areas.UserPanel.ViewComponents
         {
             int id = User.GetUserId();
             UserInformationViewModel userInformationModel = await _accountService.GetUserByIdForUserPanelAsync(id);
+
+            var sumDeposits = await _walletService.SumWalletDepositsByUserId(User.GetUserId());
+            var sumWithdrawals = await _walletService.SumWalletWithdrawalsByUserId(User.GetUserId());
+            userInformationModel.WalletBalance = sumDeposits - sumWithdrawals;
+
             return View("UserSidebar", userInformationModel);
         }
     }

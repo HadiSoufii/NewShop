@@ -53,6 +53,7 @@
                         <th>زمان ایجاد</th>
                         <th>عملیات</th>
                         <th>گالری محصول</th>
+                        <th>رنگ محصول</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -82,6 +83,12 @@
                            asp-action="Index" asp-route-productId="@product.Id" class="btn btn-info my-1">مشاهده گالری محصول</a>
                                 <a asp-area="Admin" asp-controller="ProductGallery"
                            asp-action="CreateProductGallery" asp-route-productId="@product.Id" class="btn btn-warning my-1">اضافه کردن عکس به گالری</a>
+                            </td>
+                            <td>
+                                <a asp-area="Admin" asp-controller="ProductColor"
+                           asp-action="Index" asp-route-productId="@product.Id" class="btn btn-info my-1">مشاهده رنگ های محصول</a>
+                                <a asp-area="Admin" asp-controller="ProductColor"
+                           asp-action="CreateProductColor" asp-route-productId="@product.Id" class="btn btn-warning my-1">اضافه کردن رنگ به محصول</a>
                             </td>
                         </tr>
                     }

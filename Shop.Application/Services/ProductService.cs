@@ -6,6 +6,7 @@ using Shop.Domain.Interfaces;
 using Shop.Domain.Models.Product;
 using Shop.Domain.ViewModels.Product;
 using Shop.Domain.ViewModels.ProductCategory;
+using Shop.Domain.ViewModels.ProductColor;
 using Shop.Domain.ViewModels.ProductDiscount;
 using Shop.Domain.ViewModels.ProductGallery;
 
@@ -19,13 +20,15 @@ namespace Shop.Application.Services
         private readonly IProductCategoryRepository _productCategoryRepository;
         private readonly IProductDiscountRepository _productDiscountRepository;
         private readonly IProductGalleryRepository _productGalleryRepository;
+        private readonly IProductColorRepository _productColorRepository;
 
-        public ProductService(IProductRepository productRepository, IProductCategoryRepository productCategoryRepository, IProductDiscountRepository productDiscountRepository, IProductGalleryRepository productGalleryRepository)
+        public ProductService(IProductRepository productRepository, IProductCategoryRepository productCategoryRepository, IProductDiscountRepository productDiscountRepository, IProductGalleryRepository productGalleryRepository, IProductColorRepository productColorRepository)
         {
             _productRepository = productRepository;
             _productCategoryRepository = productCategoryRepository;
             _productDiscountRepository = productDiscountRepository;
             _productGalleryRepository = productGalleryRepository;
+            _productColorRepository = productColorRepository;
         }
 
         #endregion
@@ -44,6 +47,7 @@ namespace Shop.Application.Services
             {
                 Title = productViewModel.Title,
                 Description = productViewModel.Description,
+                Feature = productViewModel.Feature,
                 Price = productViewModel.Price,
                 ProductCategoryId = productViewModel.CategoryId
             };
@@ -84,6 +88,7 @@ namespace Shop.Application.Services
             {
                 ProductId = product.Id,
                 Description = product.Description,
+                Feature = product.Feature,
                 ImageName = product.ImageName,
                 Price = product.Price,
                 Title = product.Title,
@@ -98,6 +103,7 @@ namespace Shop.Application.Services
 
             product.Title = productViewModel.Title;
             product.Description = productViewModel.Description;
+            product.Feature = productViewModel.Feature;
             product.Price = productViewModel.Price;
             product.ProductCategoryId = productViewModel.CategoryId;
 
@@ -159,6 +165,7 @@ namespace Shop.Application.Services
                     ProductPrice = product.Price,
                     ImageName = product.ImageName,
                     ProductTitle = product.Title,
+                    ColorCodes = product.ProductColors.Where(p=> !p.IsDelete).Select(p=> p.ColorCode).ToList()
                 });
             };
             return productCardsViewModel;
@@ -247,11 +254,13 @@ namespace Shop.Application.Services
             ProductDetailViewModel productDetail = new ProductDetailViewModel()
             {
                 Description = product.Description,
+                Feature = product.Feature,
                 ImageName = product.ImageName,
                 ProductId = productId,
                 ProductPrice = product.Price,
                 ProductTitle = product.Title,
-                Gallery = product.ProductGalleries.Select(s=> s.ImageName).ToList()
+                ProductColors = product.ProductColors.Where(s => !s.IsDelete).ToList(),
+                Gallery = product.ProductGalleries.Where(s => !s.IsDelete).Select(s => s.ImageName).ToList()
             };
 
             return productDetail;
@@ -340,7 +349,7 @@ namespace Shop.Application.Services
 
         public async Task<int?> GetPercentageDiscount(string discountCode, int productId)
         {
-            return await _productDiscountRepository.GetPercentageDiscountByDiscountCodeAndProductId(discountCode,productId);
+            return await _productDiscountRepository.GetPercentageDiscountByDiscountCodeAndProductId(discountCode, productId);
         }
 
         #endregion
@@ -448,6 +457,97 @@ namespace Shop.Application.Services
 
             return true;
         }
+        #endregion
+
+        #region product color
+
+        public async Task<ProductColorViewModel> GetProductColorsByProductId(int productId)
+        {
+            var productColor = await _productColorRepository.GetAllProductColorBtProductId(productId);
+            var productTitle = await GetProductTitleByProductId(productId);
+
+            return new ProductColorViewModel
+            {
+                ProductTitle = productTitle,
+                ProductColors = productColor
+            };
+        }
+
+        public async Task<CreateProductColorViewModel?> GetProductForAddProductColorToProduct(int productId)
+        {
+            var product = await _productRepository.GetProductById(productId);
+            if (product == null || product.IsDelete) return null;
+            return new CreateProductColorViewModel
+            {
+                ProductId = productId,
+                ProductTitle = product.Title,
+            };
+        }
+
+        public async Task<CreateProductColorResult> CreateProductColor(CreateProductColorViewModel createProductColor)
+        {
+            var product = await _productRepository.GetProductById(createProductColor.ProductId);
+            if (product == null || product.IsDelete) return CreateProductColorResult.NotFoundProduct;
+            if (await _productColorRepository.IsExistProductColorByColorNameAndProductId(createProductColor.ColorName, createProductColor.ProductId))
+                return CreateProductColorResult.ExistProductColorForProduct;
+
+            ProductColor productColor = new ProductColor
+            {
+                ColorName = createProductColor.ColorName,
+                ColorCode = createProductColor.ColorCode,
+                Count = createProductColor.Count,
+                ProductId = createProductColor.ProductId,
+
+            };
+            await _productColorRepository.AddProductColor(productColor);
+            return CreateProductColorResult.Success;
+        }
+
+        public async Task<UpdateProductColorViewModel?> GetProductColorForEdit(int productColorId)
+        {
+            var productColor = await _productColorRepository.GetProductColorById(productColorId);
+            if (productColor == null || productColor.IsDelete) return null;
+            var productTitle = await _productRepository.GetProductTitleByProductId(productColor.ProductId);
+            return new UpdateProductColorViewModel
+            {
+                ProductId = productColor.ProductId,
+                ColorCode = productColor.ColorCode,
+                ColorName = productColor.ColorName,
+                ProductTitle = productTitle,
+                Count = productColor.Count
+            };
+        }
+
+        public async Task<UpdateProductColorResult> UpdateProductColor(UpdateProductColorViewModel updateProductColor, int productColorId)
+        {
+            var productColor = await _productColorRepository.GetProductColorById(productColorId);
+            if (productColor == null || productColor.IsDelete) return UpdateProductColorResult.NotFoundProductColor;
+
+            if (await _productColorRepository.IsExistProductColorByColorNameAndProductId(updateProductColor.ColorName, updateProductColor.ProductId))
+            {
+                var productColorExist = await _productColorRepository.GetProductColorByColorNameAndProductId(updateProductColor.ColorName, updateProductColor.ProductId);
+                if (productColorExist.Id != productColor.Id)
+                    return UpdateProductColorResult.ExistProductColorForProduct;
+            }
+
+
+            productColor.ColorName = updateProductColor.ColorName;
+            productColor.ColorCode = updateProductColor.ColorCode;
+            productColor.Count = updateProductColor.Count;
+            await _productColorRepository.UpdateProductColor(productColor);
+            return UpdateProductColorResult.Success;
+        }
+
+        public async Task<bool> DeleteProductColor(int productColorId, int productId)
+        {
+            var productColor = await _productColorRepository.GetProductColorById(productColorId);
+            if (productColor == null || productColor.IsDelete || productColor.ProductId != productId) return false;
+
+            productColor.IsDelete = true;
+            await _productColorRepository.UpdateProductColor(productColor);
+            return true;
+        }
+
         #endregion
     }
 }

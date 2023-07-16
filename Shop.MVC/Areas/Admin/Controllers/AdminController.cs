@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Interfaces;
+using Shop.Application.Security;
 
 namespace Shop.MVC.Areas.Admin.Controllers
 {
+    [PermissionChecker(6)]
     public class AdminController : AdminBaseController
     {
         #region constructor

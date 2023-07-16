@@ -46,6 +46,11 @@ namespace Shop.Data.Repository
                 .SingleOrDefaultAsync(s => s.UserId == userId && !s.IsPaid);
         }
 
+        public async Task<List<Order>> GetUserShoppingCartsByUserId(int userId)
+        {
+            return await _context.Orders.Where(o => o.UserId == userId && o.IsPaid && !o.IsDelete).ToListAsync();
+        }
+
         public async Task<bool> IsExistUserOpenOrderByUserId(int userId)
         {
             return await _context.Orders.AnyAsync(o => o.UserId == userId && !o.IsPaid);

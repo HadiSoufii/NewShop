@@ -34,6 +34,7 @@ namespace Shop.Data.Context
         public DbSet<ProductCategory> ProductCategories { get; set; } 
         public DbSet<ProductDiscount> ProductDiscounts { get; set; } 
         public DbSet<ProductGallery> ProductGalleries { get; set; }
+        public DbSet<ProductColor> ProductColors { get; set; }
 
         #endregion
 

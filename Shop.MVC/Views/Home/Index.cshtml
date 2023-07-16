@@ -54,12 +54,11 @@
                                                 </a>
                                             </h2>
                                             <div class="product-variant">
-                                                <span class="color"
-                                                      style="background-color: #24476e;"></span>
-                                                <span class="color"
-                                                      style="background-color: #12505b;"></span>
-                                                <span class="color"
-                                                      style="background-color: #e4a793;"></span>
+                                                @foreach (var colorCode in productCard.ColorCodes)
+                                                {
+                                                    <span class="color"
+                                                          style="background-color: @colorCode;"></span>
+                                                }
                                                 <span>+</span>
                                             </div>
                                             <div class="product-price fa-num">

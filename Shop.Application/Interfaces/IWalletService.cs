@@ -11,5 +11,7 @@ namespace Shop.Application.Interfaces
         Task<int> ChargeWallet(ChargeWalletViewModel charge, int userId);
         Task<bool> SuccessPaidWallet(int walletId);
         Task<int?> GetAmountWalletByWalletId(int walletId, int userId);
+        Task<int> SumWalletDepositsByUserId(int userId);
+        Task<int> SumWalletWithdrawalsByUserId(int userId);
     }
 }
