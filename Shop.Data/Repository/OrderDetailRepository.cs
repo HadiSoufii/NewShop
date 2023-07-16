@@ -46,5 +46,18 @@ namespace Shop.Data.Repository
             _context.OrderDetails.Update(orderDetail);
             await SaveChange();
         }
+
+        public async Task<int> GetNumberSalesByDateTime(DateTime date)
+        {
+            var res = await _context.OrderDetails.Include(o => o.Order).Where(o => o.CreateDate >= date && o.Order.IsPaid && !o.IsDelete)
+                .Select(o => o.Count).ToListAsync();
+            return res.Sum();
+        }
+
+        public async Task<List<OrderDetail>> GetOrderDetailsByDateTime(DateTime date)
+        {
+            return await  _context.OrderDetails
+                .Include(o => o.Order).Include(o=> o.Product).Where(o => o.CreateDate >= date && o.Order.IsPaid && !o.IsDelete).ToListAsync();
+        }
     }
 }

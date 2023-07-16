@@ -1,4 +1,5 @@
 ﻿using Shop.Domain.Models.Order;
+using Shop.Domain.ViewModels.Chart;
 using Shop.Domain.ViewModels.Orders;
 
 namespace Shop.Application.Interfaces
@@ -20,6 +21,10 @@ namespace Shop.Application.Interfaces
         Task<UserOpenOrderViewModel> GetUserOpenOrderDetail(int userId);
         Task<bool> RemoveOrderDetail(int detailId, int userId);
         Task ChangeOrderDetailCount(int detailId, int userId, int count);
+        Task<int> GetNumberSalesInLastTenDays();
+        Task<int> GetNumberSalesInCurrentMonthShamsi();
+        Task<List<ChartBestSellerProductViewModel>> GetProductBestSellerLastTenDays();
+        Task<List<ChartBestSellerProductViewModel>> GetProductBestSellerCurrentMonthShamsi();
 
         #endregion
     }

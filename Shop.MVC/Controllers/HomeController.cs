@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Interfaces;
-using Shop.Domain.Models.Common;
 
 namespace Shop.MVC.Controllers
 {
@@ -13,7 +11,7 @@ namespace Shop.MVC.Controllers
 
         public HomeController(IProductService productService)
         {
-            _productService = productService;;
+            _productService = productService;
         }
 
         #endregion

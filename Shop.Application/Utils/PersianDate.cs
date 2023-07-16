@@ -13,6 +13,13 @@ namespace Shop.Application.Utils
                    pc.GetDayOfMonth(value).ToString("00");
         }
 
+        public static int GetMonthToShamsi(this DateTime value)
+        {
+            PersianCalendar pc = new PersianCalendar();
+
+            return pc.GetMonth(value);
+        }
+
         public static DateTime ToShamsiDateTime(this DateTime value)
         {
             PersianCalendar pc = new PersianCalendar();

@@ -1,6 +1,9 @@
-﻿using Shop.Application.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using Shop.Application.Interfaces;
+using Shop.Application.Utils;
 using Shop.Domain.Interfaces;
 using Shop.Domain.Models.Order;
+using Shop.Domain.ViewModels.Chart;
 using Shop.Domain.ViewModels.Orders;
 
 namespace Shop.Application.Services
@@ -49,7 +52,7 @@ namespace Shop.Application.Services
             int totalPrice = 0;
 
 
-            foreach (var detail in userOpenOrder.OrderDetails.Where(s=> !s.IsDelete))
+            foreach (var detail in userOpenOrder.OrderDetails.Where(s => !s.IsDelete))
             {
                 int discount = 0;
                 if (detail.DiscountCode != null)
@@ -180,6 +183,82 @@ namespace Shop.Application.Services
                 await _orderDetailRepository.UpdateOrderDetail(detail);
                 await _orderDetailRepository.SaveChange();
             }
+        }
+
+        public async Task<int> GetNumberSalesInLastTenDays()
+        {
+            DateTime dateTime = DateTime.Today.AddDays(-10);
+            return await _orderDetailRepository.GetNumberSalesByDateTime(dateTime);
+        }
+
+        public async Task<int> GetNumberSalesInCurrentMonthShamsi()
+        {
+            var dateTimeShamsi = DateTime.Now.ToShamsiDateTime();
+            var dateTimeMiladi = new DateTime(dateTimeShamsi.Year, dateTimeShamsi.Month, 1).ToMiladi();
+            return await _orderDetailRepository.GetNumberSalesByDateTime(dateTimeMiladi);
+        }
+
+        public async Task<List<ChartBestSellerProductViewModel>> GetProductBestSellerLastTenDays()
+        {
+            DateTime dateTime = DateTime.Today.AddDays(-10);
+            var res = await _orderDetailRepository.GetOrderDetailsByDateTime(dateTime);
+            var duplicateProductId = res.Select(o => o.ProductId).Distinct().ToList();
+
+            Dictionary<int, int> productIdWithNumberSales = new Dictionary<int, int>();
+            foreach (var productId in duplicateProductId)
+            {
+                productIdWithNumberSales.Add(productId, res.Where(s => s.ProductId == productId).Sum(s => s.Count));
+            }
+
+            List<ChartBestSellerProductViewModel> product = new List<ChartBestSellerProductViewModel>();
+            foreach (var item in productIdWithNumberSales.OrderByDescending(s => s.Value).Take(3).ToList())
+            {
+                product.Add(new ChartBestSellerProductViewModel
+                {
+                    ProductName = res.Where(o => o.ProductId == item.Key).FirstOrDefault().Product.Title,
+                    SalesNumber = item.Value
+                });
+            }
+            product.Add(new ChartBestSellerProductViewModel
+            {
+                ProductName = "بقیه محصولات",
+                SalesNumber = productIdWithNumberSales.OrderByDescending(s => s.Value).Skip(3).Sum(s => s.Value)
+            });
+
+            return product;
+        }
+
+        public async Task<List<ChartBestSellerProductViewModel>> GetProductBestSellerCurrentMonthShamsi()
+        {
+            // get current month to shamsi and convert to miladi
+            var dateTimeShamsi = DateTime.Now.ToShamsiDateTime();
+            var dateTimeMiladi = new DateTime(dateTimeShamsi.Year, dateTimeShamsi.Month, 1).ToMiladi();
+
+            var res = await _orderDetailRepository.GetOrderDetailsByDateTime(dateTimeMiladi);
+            var duplicateProductId = res.Select(o => o.ProductId).Distinct().ToList();
+
+            Dictionary<int, int> productIdWithNumberSales = new Dictionary<int, int>();
+            foreach (var productId in duplicateProductId)
+            {
+                productIdWithNumberSales.Add(productId, res.Where(s => s.ProductId == productId).Sum(s => s.Count));
+            }
+
+            List<ChartBestSellerProductViewModel> product = new List<ChartBestSellerProductViewModel>();
+            foreach (var item in productIdWithNumberSales.OrderByDescending(s => s.Value).Take(3).ToList())
+            {
+                product.Add(new ChartBestSellerProductViewModel
+                {
+                    ProductName = res.Where(o => o.ProductId == item.Key).FirstOrDefault().Product.Title,
+                    SalesNumber = item.Value
+                });
+            }
+            product.Add(new ChartBestSellerProductViewModel
+            {
+                ProductName = "بقیه محصولات",
+                SalesNumber = productIdWithNumberSales.OrderByDescending(s => s.Value).Skip(3).Sum(s=> s.Value)
+            });
+
+            return product;
         }
 
         #endregion

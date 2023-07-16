@@ -1,4 +1,5 @@
 ﻿using Shop.Domain.Models.Order;
+using Shop.Domain.Models.Product;
 
 namespace Shop.Domain.Interfaces
 {
@@ -9,5 +10,7 @@ namespace Shop.Domain.Interfaces
         Task AddOrderDetail(OrderDetail orderDetail);
         Task UpdateOrderDetail(OrderDetail orderDetail);
         Task SaveChange();
+        Task<int> GetNumberSalesByDateTime(DateTime date);
+        Task<List<OrderDetail>> GetOrderDetailsByDateTime(DateTime date);
     }
 }
